@@ -1,5 +1,5 @@
 """
-ASGI config for OnlineDictionary project.
+ASGI config for online_dictionary project.
 
 It exposes the ASGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.asgi import get_asgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'OnlineDictionary.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'online_dictionary.settings')
 
 application = get_asgi_application()
