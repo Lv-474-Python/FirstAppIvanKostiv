@@ -56,3 +56,8 @@ a {
 a:hover {
     color: whitesmoke;
 }
+
+.error {
+    font-size: 0.8em;
+    height: 16px;
+}

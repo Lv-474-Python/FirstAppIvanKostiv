@@ -1,23 +1,38 @@
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.contrib.auth import login, authenticate
 from . import forms
-from django.contrib.auth.models import User
 
 
 def sign_up(request):
-    if request.method == "POST":
-        form = forms.SignUpForm(request.POST)
-        if form.is_valid():
-            username, email, password, confirm = form.cleaned_data.values()
-            user = User(username=username, email=email, password=password)
-            user.save()
-
-        return HttpResponseRedirect("/sign_in")
+    if request.user.is_authenticated:
+        return redirect("main_page/")
     else:
-        form = forms.SignUpForm()
-
-    return render(request, "sign/sign_up.html", {'form': form})
+        if request.method == "POST":
+            form = forms.SignUpForm(request.POST)
+            if form.is_valid():
+                form.save()
+            else:
+                return render(request, 'sign/sign_up.html', {'form': form})
+            return HttpResponseRedirect("/sign_in")
+        else:
+            form = forms.SignUpForm()
+        return render(request, "sign/sign_up.html", {'form': form})
 
 
 def sign_in(request):
-    return render(request, "sign/sign_in.html")
+    if request.user.is_authenticated:
+        return redirect("/main_page/")
+    else:
+        if request.method == "POST":
+            form = forms.SignInForm(request.POST)
+            if form.is_valid():
+                user = form.get_user()
+                print(user)
+                login(request, user)
+            else:
+                return render(request, 'sign/sign_in.html', {'form': form})
+            return redirect("/main_page/")
+        else:
+            form = forms.SignInForm()
+        return render(request, "sign/sign_in.html", {'form': form})
