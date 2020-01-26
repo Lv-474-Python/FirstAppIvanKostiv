@@ -16,7 +16,7 @@ class Category(models.Model):
 
 
 class Word(models.Model):
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='words')
     name = models.CharField(max_length=100)
     description = models.TextField()
 
@@ -25,7 +25,7 @@ class Word(models.Model):
 
 
 class Example(models.Model):
-    word = models.ForeignKey(Word, on_delete=models.CASCADE)
+    word = models.ForeignKey(Word, on_delete=models.CASCADE, related_name='sentences')
     sentence = models.TextField()
 
     def __str__(self):

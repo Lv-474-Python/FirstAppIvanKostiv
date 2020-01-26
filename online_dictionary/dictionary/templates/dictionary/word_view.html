@@ -1,0 +1,39 @@
+{% extends "dictionary/left_menu_template.html" %}
+
+{% block white_workspace %}
+    <div class="row h-100">
+        <div class="col-md-10">
+            <div class="row ml-0 mt-4 word-label">
+                <h5>what?</h5>
+            </div>
+
+            <div class="row ml-3 gray-background">
+                <div class="word-name">
+                    <h4 class="my-auto p-2">{{ word }}</h4>
+                </div>
+            </div>
+
+            <div class="row ml-0 mt-4 word-label">
+                <h5>what is it?</h5>
+            </div>
+
+            <div class="row ml-3 gray-background">
+                <div class="word-name">
+                    <h5 class="my-auto p-2">{{ word.description }}</h5>
+                </div>
+            </div>
+
+            <div class="row ml-0 mt-4 word-label">
+                <h5>examples?</h5>
+            </div>
+
+            {% for sentence in word.sentences.all %}
+                <div class="row mt-2 ml-3 gray-background">
+                    <div class="">
+                        <h5 class="my-auto p-2">{{ sentence }}</h5>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
