@@ -1,18 +1,21 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
-from django.contrib.auth.forms import AuthenticationForm
 
 
 class SignUpForm(forms.ModelForm):
-    username = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control',
-                                                             'placeholder': "Enter your login", }))
-    email = forms.EmailField(widget=forms.TextInput(attrs={'class': 'form-control',
-                                                           'placeholder': "Enter your email", }))
-    password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control',
-                                                                 'placeholder': "Enter your password", }))
-    confirm = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control',
-                                                                'placeholder': "Confirm your password", }))
+    username = forms.CharField(widget=forms.TextInput(
+        attrs={'class': 'form-control',
+               'placeholder': "Enter your login", }))
+    email = forms.EmailField(widget=forms.TextInput(
+        attrs={'class': 'form-control',
+               'placeholder': "Enter your email", }))
+    password = forms.CharField(widget=forms.PasswordInput(
+        attrs={'class': 'form-control',
+               'placeholder': "Enter your password", }))
+    confirm = forms.CharField(widget=forms.PasswordInput(
+        attrs={'class': 'form-control',
+               'placeholder': "Confirm your password", }))
 
     class Meta:
         model = User
@@ -26,7 +29,8 @@ class SignUpForm(forms.ModelForm):
     def clean_username(self):
         try:
             username = User.objects.get(username=self.cleaned_data.get('username'))
-            raise forms.ValidationError('User with login %(login)s already exist', params={'login': username})
+            raise forms.ValidationError('User with login %(login)s already exist',
+                                        params={'login': username})
         except User.DoesNotExist:
             return self.cleaned_data.get('username')
 
@@ -50,10 +54,13 @@ class SignUpForm(forms.ModelForm):
 
 
 class SignInForm(forms.Form):
-    username = forms.CharField(label="Login", widget=forms.TextInput(attrs={'class': 'form-control',
-                                                             'placeholder': "Enter your login", }))
-    password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control',
-                                                                 'placeholder': "Enter your password", }))
+    username = forms.CharField(label="Login",
+                               widget=forms.TextInput(
+                                   attrs={'class': 'form-control',
+                                          'placeholder': "Enter your login", }))
+    password = forms.CharField(widget=forms.PasswordInput(
+        attrs={'class': 'form-control',
+               'placeholder': "Enter your password", }))
 
     def clean_password(self):
         self.get_user()
@@ -65,5 +72,4 @@ class SignInForm(forms.Form):
 
         if user is not None:
             return user
-        else:
-            raise forms.ValidationError("Invalid login or password entered")
+        raise forms.ValidationError("Invalid login or password entered")

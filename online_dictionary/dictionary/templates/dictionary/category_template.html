@@ -1,0 +1,15 @@
+<ul>
+    {% for category in categories %}
+        <li class="ml-3 category-item">
+            <a href="#">
+                {{ category }}
+            </a>
+            {% if category.categories.all %}
+                {% with categories=category.categories.all id=category.name %}
+                    {% include "dictionary/category_template.html" %}
+                {% endwith %}
+            {% endif %}
+
+        </li>
+    {% endfor %}
+</ul>

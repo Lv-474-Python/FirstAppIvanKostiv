@@ -1,14 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-    <p>This is main page</p>
-    <form action="" method="post">
-        {% csrf_token %}
-        <button type="submit">log out</button>
-    </form>
-</body>
-</html>
+{% extends "dictionary/left_menu_template.html" %}
+
+{% block white_workspace %}
+{% endblock %}
