@@ -19,10 +19,8 @@ def main_page(request):
                 user=request.user,
                 category=None
             ),
-            'latest_categories': Category.objects
-                                     .order_by('id')
-                                     .filter(user=request.user)
-                                     .reverse()[:3]
+            'latest_categories':
+                Category.objects.order_by('id').filter(user=request.user).reverse()[:3]
         }
     )
 
@@ -62,7 +60,6 @@ def word_view(request, category, word):
             ),
 
             'word': Word.objects.get(
-                category=Category.objects.get(name=category),
                 name=word
             ),
         }

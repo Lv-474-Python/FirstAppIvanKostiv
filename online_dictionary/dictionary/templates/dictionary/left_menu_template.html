@@ -11,12 +11,14 @@
         <div class="row h-100">
             <div class="col-md-4 blue-background">
                 <div class="row">
-                    <svg class="mt-4 mx-auto" width="114" height="114" viewBox="0 0 114 114" fill="none"
-                         xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="57" cy="57" r="57" fill="white"></circle>
-                        <path d="M57.5 57.5C66.8109 57.5 74.3571 50.0018 74.3571 40.75C74.3571 31.4982 66.8109 24 57.5 24C48.1891 24 40.6429 31.4982 40.6429 40.75C40.6429 50.0018 48.1891 57.5 57.5 57.5ZM69.3 61.6875H67.1007C64.177 63.0223 60.9241 63.7812 57.5 63.7812C54.0759 63.7812 50.8362 63.0223 47.8993 61.6875H45.7C35.9281 61.6875 28 69.5652 28 79.275V84.7188C28 88.1865 30.8315 91 34.3214 91H80.6786C84.1685 91 87 88.1865 87 84.7188V79.275C87 69.5652 79.0719 61.6875 69.3 61.6875Z"
-                              fill="#0F52BA"></path>
-                    </svg>
+                    <a class="mt-4 mx-auto" href="/main_page/">
+                        <svg width="114" height="114" viewBox="0 0 114 114" fill="none"
+                             xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="57" cy="57" r="57" fill="white"></circle>
+                            <path d="M57.5 57.5C66.8109 57.5 74.3571 50.0018 74.3571 40.75C74.3571 31.4982 66.8109 24 57.5 24C48.1891 24 40.6429 31.4982 40.6429 40.75C40.6429 50.0018 48.1891 57.5 57.5 57.5ZM69.3 61.6875H67.1007C64.177 63.0223 60.9241 63.7812 57.5 63.7812C54.0759 63.7812 50.8362 63.0223 47.8993 61.6875H45.7C35.9281 61.6875 28 69.5652 28 79.275V84.7188C28 88.1865 30.8315 91 34.3214 91H80.6786C84.1685 91 87 88.1865 87 84.7188V79.275C87 69.5652 79.0719 61.6875 69.3 61.6875Z"
+                                  fill="#0F52BA"></path>
+                        </svg>
+                    </a>
                 </div>
 
                 <div class="row mt-2">
@@ -29,12 +31,12 @@
                     <h3 class="ml-3">Categories</h3>
                 </div>
 
-                {% with categories=categories%}
+                {% with categories=categories %}
                     {% include "dictionary/category_template.html" %}
                 {% endwith %}
 
                 <div class="row mt-5">
-                    <form class="mx-auto" action="" method="post">
+                    <form class="mx-auto" action="{% url 'main_page' %}" method="post">
                         {% csrf_token %}
                         <button class="btn btn-light default-button" type="submit">log out</button>
                     </form>
