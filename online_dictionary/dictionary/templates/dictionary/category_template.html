@@ -1,15 +1,17 @@
-<ul>
-    {% for category in categories %}
-        <li class="ml-3 category-item">
-            <a href="/main_page/{{ category }}/words/">
-                {{ category }}
-            </a>
+{% for category in categories %}
+    <li class="ml-3 category-item">
+
+        <a href="{% url 'category_view' category.id %}">
+            {{ category }}
+        </a>
+{#        <span class="collapsible" onclick="collapse(this)">Next</span>#}
+        <ul class="content">
             {% if category.categories.all %}
                 {% with categories=category.categories.all %}
                     {% include "dictionary/category_template.html" %}
                 {% endwith %}
             {% endif %}
+        </ul>
 
-        </li>
-    {% endfor %}
-</ul>
+    </li>
+{% endfor %}

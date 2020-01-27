@@ -19,7 +19,7 @@
     {% if category.words.all %}
         {% for word in category.words.all %}
             <div class="row ml-3 mt-3">
-                <a class="word ml-3" href="{{ word }}/definition/">
+                <a class="word ml-3" href="{% url 'word_view' category.id word.id %}">
                     <h5>{{ word }}</h5>
                 </a>
             </div>
@@ -47,7 +47,7 @@
     {% if category.categories.all %}
         {% for children in category.categories.all %}
             <div class="row ml-3">
-                <a class="category ml-3" href="{{ children }}/words/">
+                <a class="category ml-3" href="{% url 'category_view' children.id %}">
                     <h5>{{ children }}</h5>
                 </a>
             </div>

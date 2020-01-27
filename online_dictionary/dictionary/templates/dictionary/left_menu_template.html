@@ -31,9 +31,11 @@
                     <h3 class="ml-3">Categories</h3>
                 </div>
 
-                {% with categories=categories %}
-                    {% include "dictionary/category_template.html" %}
-                {% endwith %}
+                <ul>
+                    {% with categories=categories %}
+                        {% include "dictionary/category_template.html" %}
+                    {% endwith %}
+                </ul>
 
                 <div class="row mt-5">
                     <form class="mx-auto" action="{% url 'main_page' %}" method="post">

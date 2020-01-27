@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from .models import Category, Word
@@ -27,6 +27,8 @@ def main_page(request):
 
 @login_required(login_url='/sign_in/')
 def category_view(request, category):
+    category = get_object_or_404(Category, id=category)
+
     return render(
         request,
         'dictionary/category_view.html',
@@ -37,7 +39,7 @@ def category_view(request, category):
             ),
             'category': Category.objects.get(
                 user=request.user,
-                name=category,
+                name=category.name,
             ),
         }
     )
@@ -45,6 +47,9 @@ def category_view(request, category):
 
 @login_required(login_url='/sign_in/')
 def word_view(request, category, word):
+    category = get_object_or_404(Category, id=category)
+    word = get_object_or_404(Word, id=word)
+
     return render(
         request,
         'dictionary/word_view.html',
@@ -56,11 +61,12 @@ def word_view(request, category, word):
 
             'category': Category.objects.get(
                 user=request.user,
-                name=category
+                name=category.name
             ),
 
             'word': Word.objects.get(
-                name=word
+                category=category,
+                name=word.name,
             ),
         }
     )
