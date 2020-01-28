@@ -1,11 +1,29 @@
 {% for category in categories %}
     <li class="ml-3 category-item">
+        {% if category.categories.all %}
+            <div style="display: inline" onclick="collapsible(this.firstChild.nextSibling)">
+                <svg
+                        data-toggle="collapse"
+                        data-target="#{{ category.id }}"
+                        aria-expanded="false"
+                        aria-controls="{{ category.id }}"
+                        width="8"
+                        height="10"
+                        viewBox="0 0 8 10"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                >
+                    <path d="M8 5L0.499999 9.33013V0.669873L8 5Z" fill="white"></path>
+                </svg>
+            </div>
+
+        {% endif %}
 
         <a href="{% url 'category_view' category.id %}">
             {{ category }}
         </a>
-{#        <span class="collapsible" onclick="collapse(this)">Next</span>#}
-        <ul class="content">
+
+        <ul class="collapse" id="{{ category.id }}">
             {% if category.categories.all %}
                 {% with categories=category.categories.all %}
                     {% include "dictionary/category_template.html" %}

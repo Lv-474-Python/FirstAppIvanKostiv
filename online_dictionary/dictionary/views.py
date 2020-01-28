@@ -28,7 +28,6 @@ def main_page(request):
 @login_required(login_url='/sign_in/')
 def category_view(request, category):
     category = get_object_or_404(Category, id=category)
-
     return render(
         request,
         'dictionary/category_view.html',
@@ -39,7 +38,7 @@ def category_view(request, category):
             ),
             'category': Category.objects.get(
                 user=request.user,
-                name=category.name,
+                id=category.id,
             ),
         }
     )
@@ -61,12 +60,12 @@ def word_view(request, category, word):
 
             'category': Category.objects.get(
                 user=request.user,
-                name=category.name
+                id=category.id
             ),
 
             'word': Word.objects.get(
                 category=category,
-                name=word.name,
+                id=word.id,
             ),
         }
     )
