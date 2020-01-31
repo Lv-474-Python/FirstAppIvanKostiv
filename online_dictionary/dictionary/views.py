@@ -46,7 +46,6 @@ def category_view(request, category_id):
 
 @login_required(login_url='/sign_in/')
 def word_view(request, category_id, word_id):
-
     category = get_object_or_404(Category, id=category_id)
     word = get_object_or_404(Word, id=word_id)
 
@@ -104,5 +103,77 @@ def add_new_word(request, category_id):
             ),
 
             'category': category_id,
+        }
+    )
+
+
+@login_required(login_url='/sign_in/')
+def add_new_category(request, category_id):
+    if request.method == "POST":
+        parent_category = get_object_or_404(Category, id=category_id)
+
+        new_category = Category(
+            user=request.user,
+            name=request.POST.get('category'),
+            category=parent_category
+        )
+
+        new_category.save()
+
+        for subcategory in request.POST.getlist('subcategories')[:-1]:
+            new_subcategory = Category(
+                user=request.user,
+                name=subcategory,
+                category=new_category,
+            )
+
+            new_subcategory.save()
+
+        return redirect('category_view', new_category.id)
+    return render(
+        request,
+        'dictionary/add_new_category.html',
+        {
+            'categories': Category.objects.filter(
+                user=request.user,
+                category=None
+            ),
+
+            'category': category_id,
+        }
+    )
+
+
+@login_required(login_url='/sign_in/')
+def add_new_language(request):
+    if request.method == "POST":
+
+        new_language = Category(
+            user=request.user,
+            name=request.POST.get('category'),
+            category=None
+        )
+
+        new_language.save()
+
+        for subcategory in request.POST.getlist('subcategories')[:-1]:
+            new_subcategory = Category(
+                user=request.user,
+                name=subcategory,
+                category=new_language,
+            )
+
+            new_subcategory.save()
+
+        return redirect('category_view', new_language.id)
+
+    return render(
+        request,
+        'dictionary/add_new_category.html',
+        {
+            'categories': Category.objects.filter(
+                user=request.user,
+                category=None
+            ),
         }
     )

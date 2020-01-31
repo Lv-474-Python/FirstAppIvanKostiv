@@ -36,3 +36,24 @@ function addNewSentenceInput(sentence_input) {
         }
     }
 }
+
+function addNewSubcategoryInput(subcategory_input) {
+    if (subcategory_input.value !== '') {
+        if (subcategory_input.getAttribute('id') === 'last_subcategory') {
+            $('#last_subcategory')
+                .removeAttr('id')
+                .parent().clone().children('.subcategory_input')
+                .val("")
+                .attr('id', 'last_subcategory')
+                .attr('onblur', 'addNewSubcategoryInput(this)')
+                .parent().addClass('mt-1')
+                .appendTo("#category-form-inputs")
+        }
+    } else {
+        if (subcategory_input.getAttribute('id') !== 'last_subcategory') {
+            // empty not last sentence input
+            subcategory_input.parentNode.parentNode.removeChild(subcategory_input.parentNode);
+            // input > div > form.delete(div)
+        }
+    }
+}

@@ -16,5 +16,13 @@ urlpatterns = [
 
     path('<int:category_id>/add_word/',
          views.add_new_word,
-         name='new_word')
+         name='new_word'),
+
+    path('<int:category_id>/add_category/',
+         views.add_new_category,
+         name='new_category'),
+
+    path('add_language/',
+         views.add_new_language,
+         name='new_language')
 ]

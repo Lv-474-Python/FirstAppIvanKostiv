@@ -108,7 +108,7 @@ a.add-link {
     color: #ACADA8;
 }
 
-.word-input {
+.word-input, .subcategory_input {
     background-color: #eeeeee;
     border-color: #eeeeee;
     border-radius: 10px;
