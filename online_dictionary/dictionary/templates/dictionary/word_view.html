@@ -2,13 +2,13 @@
 
 {% block white_workspace %}
     <div class="row h-100">
-        <div class="col-md-10">
+        <div class="col-md-11">
             <div class="row ml-0 mt-4 word-label">
                 <h5>what?</h5>
             </div>
 
-            <div class="row ml-3 gray-background">
-                <div class="word-name word-title">
+            <div class="row ml-3">
+                <div class="col-md-11 word-name word-title gray-background">
                     <h3 class="my-auto p-2">{{ word }}</h3>
                 </div>
             </div>
@@ -17,12 +17,14 @@
                 <h5>what is it?</h5>
             </div>
 
-            <div class="row ml-3 gray-background">
+            <div class="row ml-3">
+                <div class="col-md-11 gray-background">
                     <textarea class="form-control w-100 word-input p-2"
                               placeholder="Enter your description..."
                               rows="6"
                               name="description"
                               readonly>{{ word.description }}</textarea>
+                </div>
             </div>
 
             <div class="row ml-0 mt-4 word-label">
@@ -30,12 +32,49 @@
             </div>
 
             {% for sentence in word.sentences.all %}
-                <div class="row mt-2 ml-3 gray-background">
-                    <div class="">
+                <div class="row mt-2 ml-3">
+                    <div class="col-md-11 gray-background">
                         <h5 class="my-auto p-2">{{ sentence }}</h5>
+                    </div>
+
+                    <div class="col-md-1 my-auto">
+                        <svg class='' width="24" height="24" viewBox="-2 -2 24 24" fill="none"
+                             xmlns="http://www.w3.org/2000/svg">
+                            <path d="M16.064 8.31564C16.064 8.21251 15.9797 8.12814 15.8765 8.12814L14.3297 8.13517L12 10.9125L9.67263 8.13751L8.12341 8.13048C8.02029 8.13048 7.93591 8.21251 7.93591 8.31798C7.93591 8.36251 7.95232 8.4047 7.98044 8.43985L11.0297 12.0727L7.98044 15.7031C7.95212 15.7375 7.93641 15.7805 7.93591 15.825C7.93591 15.9281 8.02029 16.0125 8.12341 16.0125L9.67263 16.0055L12 13.2281L14.3273 16.0031L15.8742 16.0102C15.9773 16.0102 16.0617 15.9281 16.0617 15.8227C16.0617 15.7781 16.0453 15.736 16.0172 15.7008L12.9726 12.0703L16.0219 8.43751C16.05 8.4047 16.064 8.36017 16.064 8.31564Z"
+                                  fill="#0F52BA"></path>
+                            <path d="M12 1.52344C6.20156 1.52344 1.5 6.225 1.5 12.0234C1.5 17.8219 6.20156 22.5234 12 22.5234C17.7984 22.5234 22.5 17.8219 22.5 12.0234C22.5 6.225 17.7984 1.52344 12 1.52344ZM12 20.7422C7.18594 20.7422 3.28125 16.8375 3.28125 12.0234C3.28125 7.20938 7.18594 3.30469 12 3.30469C16.8141 3.30469 20.7188 7.20938 20.7188 12.0234C20.7188 16.8375 16.8141 20.7422 12 20.7422Z"
+                                  fill="#0F52BA"></path>
+                        </svg>
+
                     </div>
                 </div>
             {% endfor %}
+        </div>
+
+        <div class="col-md-1">
+            <div class="row mt-4">
+                <div class="mx-auto">
+                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M11.25 5.75H11C11.1375 5.75 11.25 5.6375 11.25 5.5V5.75H20.75V5.5C20.75 5.6375 20.8625 5.75 21 5.75H20.75V8H23V5.5C23 4.39688 22.1031 3.5 21 3.5H11C9.89687 3.5 9 4.39688 9 5.5V8H11.25V5.75ZM27 8H5C4.44687 8 4 8.44688 4 9V10C4 10.1375 4.1125 10.25 4.25 10.25H6.1375L6.90938 26.5938C6.95938 27.6594 7.84063 28.5 8.90625 28.5H23.0938C24.1625 28.5 25.0406 27.6625 25.0906 26.5938L25.8625 10.25H27.75C27.8875 10.25 28 10.1375 28 10V9C28 8.44688 27.5531 8 27 8ZM22.8531 26.25H9.14688L8.39062 10.25H23.6094L22.8531 26.25Z"
+                              fill="#0F52BA"></path>
+                    </svg>
+                </div>
+
+            </div>
+
+            <div class="row">
+                <div class="mx-auto">
+                    <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12.8334 4.66669H4.66671C4.04787 4.66669 3.45438 4.91252 3.01679 5.3501C2.57921 5.78769 2.33337 6.38118 2.33337 7.00002V23.3334C2.33337 23.9522 2.57921 24.5457 3.01679 24.9833C3.45438 25.4209 4.04787 25.6667 4.66671 25.6667H21C21.6189 25.6667 22.2124 25.4209 22.65 24.9833C23.0875 24.5457 23.3334 23.9522 23.3334 23.3334V15.1667"
+                              stroke="#0F52BA" stroke-width="2.66667" stroke-linecap="round"
+                              stroke-linejoin="round"></path>
+                        <path d="M21.5834 2.91668C22.0475 2.45255 22.677 2.1918 23.3334 2.1918C23.9897 2.1918 24.6192 2.45255 25.0834 2.91668C25.5475 3.38081 25.8082 4.0103 25.8082 4.66668C25.8082 5.32305 25.5475 5.95255 25.0834 6.41668L14 17.5L9.33337 18.6667L10.5 14L21.5834 2.91668Z"
+                              stroke="#0F52BA" stroke-width="2.66667" stroke-linecap="round"
+                              stroke-linejoin="round"></path>
+                    </svg>
+                </div>
+
+            </div>
         </div>
     </div>
 {% endblock %}

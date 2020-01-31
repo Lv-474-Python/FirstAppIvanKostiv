@@ -4,23 +4,37 @@
     <div class="row h-100">
         <div class="col-md-10">
             <form class="w-100"
-                  {% if category %}
+                    {% if category %}
                   action="{% url 'new_category' category %}"
-                  {% else %}
-                    action="{% url 'new_language' %}"
-                  {% endif %}
+                    {% else %}
+                  action="{% url 'new_language' %}"
+                    {% endif %}
                   method="post"
                   id="add_category_form">
                 {% csrf_token %}
                 <div id="category-form-inputs">
-                    <div class="row ml-0 mt-4 word-label">
-                        <h5>category?</h5>
-                    </div>
-                    <div class="row ml-3">
-                        <input class="form-control w-100 word-input word-title p-2" type="text"
-                               placeholder="Enter your category..."
-                               name="category">
-                    </div>
+
+                    {% if category %}
+                        <div class="row ml-0 mt-4 word-label">
+                            <h5>category?</h5>
+                        </div>
+
+                        <div class="row ml-3">
+                            <input class="form-control w-100 word-input word-title p-2" type="text"
+                                   placeholder="Enter your category..."
+                                   name="category">
+                        </div>
+                    {% else %}
+                        <div class="row ml-0 mt-4 word-label">
+                            <h5>languages?</h5>
+                        </div>
+
+                        <div class="row ml-3">
+                            <input class="form-control w-100 word-input word-title p-2" type="text"
+                                   placeholder="Enter your languages..."
+                                   name="category">
+                        </div>
+                    {% endif %}
 
                     <div class="row ml-0 mt-4 word-label">
                         <h5>some subcategory?</h5>

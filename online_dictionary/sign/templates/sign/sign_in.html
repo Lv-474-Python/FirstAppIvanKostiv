@@ -15,30 +15,35 @@
             </div>
             <div class="col-md-6 blue-background">
                 <h1 class="mt-4 w-100 text-center">Online Dictionary</h1>
-                <h1 class="mt-4">Sign in</h1>
+                <h2 class="mt-4 w-100 text-center">Sign in</h2>
 
-                <div class="container mx-auto mt-4 px-5">
-                    <form action="/sign_in/" method="post">
-                        {% csrf_token %}
-                        <div class="form-group mb-0">
-                            <label class="control-label mb-0" for="username_id">Login</label>
-                            {{ form.username }}
-                            <div class="error">{{ form.username.errors.as_text }}</div>
+                <div class="container mx-auto mt-4">
+                    <div class="row">
+                        <div class="col-md-8 mx-auto">
+                            <form action="/sign_in/" method="post">
+                                {% csrf_token %}
+                                <div class="form-group mb-0">
+                                    <label class="control-label mb-0" for="username_id">Login</label>
+                                    {{ form.username }}
+                                    <div class="error">{{ form.username.errors.as_text }}</div>
+                                </div>
+                                <div class="form-group mb-0">
+                                    <label class="control-label mb-0" for="username_id">Password</label>
+                                    {{ form.password }}
+                                    <div class="error">{{ form.password.errors.as_text }}</div>
+                                </div>
+                                <div class="row">
+                                    <input class="btn btn-light default-button mt-4 mx-auto px-5 py-0" type="submit"
+                                           value="Sign In">
+                                </div>
+                            </form>
                         </div>
-                        <div class="form-group mb-0">
-                            <label class="control-label mb-0" for="username_id">Password</label>
-                            {{ form.password }}
-                            <div class="error">{{ form.password.errors.as_text }}</div>
-                        </div>
-                        <div class="row">
-                            <input class="btn btn-light default-button mt-4  mx-auto" type="submit" value="Sign In">
-                        </div>
-                    </form>
+                    </div>
                 </div>
 
                 <div class="row mt-4 pt-2">
-                    <h4 class="mx-auto">Don't have an account?
-                        <a href="{% url 'sign_up' %}"><strong>Sign up</strong></a></h4>
+                    <h5 class="mx-auto">Don't have an account?
+                        <a href="{% url 'sign_up' %}"><strong>Sign up</strong></a></h5>
                 </div>
             </div>
         </div>
