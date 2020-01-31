@@ -1,23 +1,23 @@
 {% for category in categories %}
     <li class="ml-3 category-item">
-        {% if category.categories.all %}
-            <div style="display: inline" onclick="collapsible(this.firstChild.nextSibling)">
-                <svg
-                        data-toggle="collapse"
-                        data-target="#{{ category.id }}"
-                        aria-expanded="false"
-                        aria-controls="{{ category.id }}"
-                        width="8"
-                        height="10"
-                        viewBox="0 0 8 10"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                >
-                    <path d="M8 5L0.499999 9.33013V0.669873L8 5Z" fill="white"></path>
-                </svg>
-            </div>
+        {#        {% if category.categories.all %}#}
 
-        {% endif %}
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"
+             data-toggle="collapse"
+             data-target="#{{ category.id }}"
+             aria-expanded="false"
+             aria-controls="{{ category.id }}"
+             onclick="collapsible(this)"
+
+                {% if category.categories.all %}
+             visibility="visible"
+                {% else %}
+             visibility="hidden"
+                {% endif %}
+        >
+            <path d="M13 8L5.5 12.3301V3.66987L13 8Z" fill="white"></path>
+        </svg>
+
 
         <a href="{% url 'category_view' category.id %}">
             {{ category }}

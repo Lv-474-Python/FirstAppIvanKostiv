@@ -40,7 +40,7 @@ label {
     background-color: #0F52BA;
 }
 
-.default-button {
+.default-button, .workspace-button {
     color: #0F52BA;
     font-size: 4vh;
     border-radius: 24px;
@@ -51,6 +51,10 @@ label {
 .default-button:hover {
     background-color: #0F52BA;
     color: white;
+}
+
+.small-button {
+    font-size: 3vh;
 }
 
 a {
@@ -104,15 +108,27 @@ a.add-link {
     color: #ACADA8;
 }
 
-/*.collapsible {*/
-/*  cursor: pointer;*/
-/*  width: 100%;*/
-/*  border: none;*/
-/*  text-align: left;*/
-/*  outline: none;*/
-/*}*/
+.word-input {
+    background-color: #eeeeee;
+    border-color: #eeeeee;
+    border-radius: 10px;
+    font-size: 2.8vh;
+}
 
-/*.content {*/
-/*  display: none;*/
-/*  overflow: hidden;*/
-/*}*/
+.word-input:focus {
+    box-shadow: none;
+    border-color: #0F52BA;
+}
+
+.word-title {
+    font-size: 3.5vh;
+}
+
+textarea {
+    resize: none;
+}
+
+.workspace-button {
+    color: white;
+    background-color: #0F52BA;
+}

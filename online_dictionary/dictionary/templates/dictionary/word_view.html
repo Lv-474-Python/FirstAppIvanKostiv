@@ -8,8 +8,8 @@
             </div>
 
             <div class="row ml-3 gray-background">
-                <div class="word-name">
-                    <h4 class="my-auto p-2">{{ word }}</h4>
+                <div class="word-name word-title">
+                    <h3 class="my-auto p-2">{{ word }}</h3>
                 </div>
             </div>
 
@@ -18,9 +18,11 @@
             </div>
 
             <div class="row ml-3 gray-background">
-                <div class="word-name">
-                    <h5 class="my-auto p-2">{{ word.description }}</h5>
-                </div>
+                    <textarea class="form-control w-100 word-input p-2"
+                              placeholder="Enter your description..."
+                              rows="6"
+                              name="description"
+                              readonly>{{ word.description }}</textarea>
             </div>
 
             <div class="row ml-0 mt-4 word-label">

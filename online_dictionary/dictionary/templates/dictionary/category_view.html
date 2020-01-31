@@ -18,7 +18,7 @@
 
     {% if category.words.all %}
         {% for word in category.words.all %}
-            <div class="row ml-3 mt-3">
+            <div class="row ml-3">
                 <a class="word ml-3" href="{% url 'word_view' category.id word.id %}">
                     <h5>{{ word }}</h5>
                 </a>
@@ -31,7 +31,7 @@
     {% endif %}
 
     <div class="row mt-0">
-        <a class="mx-auto add-link" href="#">
+        <a class="mx-auto add-link" href="{% url 'new_word' category.id %}">
             <h5>Add new word</h5>
         </a>
     </div>
