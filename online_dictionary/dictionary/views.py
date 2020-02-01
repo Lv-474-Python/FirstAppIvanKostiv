@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
-from django.http import QueryDict, HttpResponse, HttpResponseRedirect
+from django.http import QueryDict, HttpResponse
 from .models import Category, Word, Example
 
 
@@ -51,30 +51,29 @@ def word_view(request, category_id, word_id):
         Word.objects.filter(id=word_id).delete()
         return HttpResponse()
 
-    else:
-        category = get_object_or_404(Category, id=category_id)
-        word = get_object_or_404(Word, id=word_id)
+    category = get_object_or_404(Category, id=category_id)
+    word = get_object_or_404(Word, id=word_id)
 
-        return render(
-            request,
-            'dictionary/word_view.html',
-            {
-                'categories': Category.objects.filter(
-                    user=request.user,
-                    category=None,
-                ),
+    return render(
+        request,
+        'dictionary/word_view.html',
+        {
+            'categories': Category.objects.filter(
+                user=request.user,
+                category=None,
+            ),
 
-                'category': Category.objects.get(
-                    user=request.user,
-                    id=category.id,
-                ),
+            'category': Category.objects.get(
+                user=request.user,
+                id=category.id,
+            ),
 
-                'word': Word.objects.get(
-                    category=category,
-                    id=word.id,
-                ),
-            }
-        )
+            'word': Word.objects.get(
+                category=category,
+                id=word.id,
+            ),
+        }
+    )
 
 
 @login_required(login_url='/sign_in/')
@@ -215,20 +214,20 @@ def edit_word(request, category_id, word_id):
             sentence.save()
 
         return HttpResponse()
-    else:
-        category = get_object_or_404(Category, id=category_id)
-        word = get_object_or_404(Word, id=word_id)
 
-        return render(
-            request,
-            'dictionary/edit_word.html',
-            {
-                'categories': Category.objects.filter(
-                    user=request.user,
-                    category=None
-                ),
+    category = get_object_or_404(Category, id=category_id)
+    word = get_object_or_404(Word, id=word_id)
 
-                'category': category,
-                'word': word
-            }
-        )
+    return render(
+        request,
+        'dictionary/edit_word.html',
+        {
+            'categories': Category.objects.filter(
+                user=request.user,
+                category=None
+            ),
+
+            'category': category,
+            'word': word
+        }
+    )
