@@ -1,0 +1,70 @@
+{% extends "dictionary/left_menu_template.html" %}
+
+{% block white_workspace %}
+    <div class="row h-100">
+        <div class="col-md-11">
+            {% csrf_token %}
+            <div id="word-form-inputs" class="w-100">
+                <div class="row ml-0 mt-4 word-label">
+                    <h5>what?</h5>
+                </div>
+                <div class="row ml-3">
+                    <div class="col-md-11 word-name word-title gray-background m-0 p-0">
+                        <input class="form-control w-100 word-input word-title p-2" type="text"
+                               placeholder="Enter your word..."
+                               name="word"
+                               value="{{ word }}">
+                    </div>
+                </div>
+
+                <div class="row ml-0 mt-4 word-label">
+                    <h5>what is it?</h5>
+                </div>
+
+                <div class="row ml-3">
+                    <div class="col-md-11 gray-background m-0 p-0">
+                         <textarea class="form-control w-100 word-input p-2"
+                                   placeholder="Enter your description..."
+                                   rows="6"
+                                   name="description">{{ word.description }}</textarea>
+                    </div>
+                </div>
+
+                <div class="row ml-0 mt-4 word-label">
+                    <h5>examples?</h5>
+                </div>
+
+                {% for sentence in word.sentences.all %}
+                    <div class="row mt-1 ml-3" id="{{ sentence.id }}">
+                        <div class="col-md-11 p-0 m-0 sentence-wrapper gray-background">
+                            <input class="form-control w-100 word-input p-2 sentence_input"
+                                   type="text"
+                                   placeholder="Enter a sentence with this word..."
+                                   onblur="addNewSentenceInput(this)"
+                                   name="sentences"
+                                   value="{{ sentence }}">
+                        </div>
+                    </div>
+                {% endfor %}
+
+                <div class="row mt-1 ml-3">
+                    <div class="col-md-11 p-0 m-0 sentence-wrapper gray-background">
+                        <input class="form-control w-100 word-input p-2 sentence_input"
+                               type="text"
+                               placeholder="Enter a sentence with this word..."
+                               onblur="addNewSentenceInput(this)"
+                               id="last_sentence"
+                               name="sentences">
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row">
+                <button type="button" onclick="saveEditWord({{ category.id }}, {{ word.id }})"
+                        class="btn workspace-button mx-auto my-4 px-5">Save
+                </button>
+            </div>
+        </div>
+    </div>
+{% endblock %}

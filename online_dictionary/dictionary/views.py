@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
-from django.http import QueryDict, HttpResponse
+from django.http import QueryDict, HttpResponse, HttpResponseRedirect
 from .models import Category, Word, Example
 
 
@@ -135,7 +135,7 @@ def add_new_category(request, category_id):
 
             new_subcategory.save()
 
-        return redirect('category_view', new_category.id)
+        return HttpResponse()
     return render(
         request,
         'dictionary/add_new_category.html',
@@ -192,3 +192,43 @@ def delete_example(request):
         Example.objects.filter(id=sentence.get('sentence_id')).delete()
 
     return HttpResponse()
+
+
+@login_required(login_url='/sign_in/')
+def edit_word(request, category_id, word_id):
+    if request.method == "PUT":
+        word = get_object_or_404(Word, id=word_id)
+
+        data = QueryDict(request.body)
+
+        word.name = data.get('word')
+        word.description = data.get('description')
+
+        word.save()
+
+        Example.objects.filter(word=word).delete()
+
+        for example in data.getlist('sentences[]')[:-1]:
+            sentence = Example(word=word,
+                               sentence=example)
+
+            sentence.save()
+
+        return HttpResponse()
+    else:
+        category = get_object_or_404(Category, id=category_id)
+        word = get_object_or_404(Word, id=word_id)
+
+        return render(
+            request,
+            'dictionary/edit_word.html',
+            {
+                'categories': Category.objects.filter(
+                    user=request.user,
+                    category=None
+                ),
+
+                'category': category,
+                'word': word
+            }
+        )

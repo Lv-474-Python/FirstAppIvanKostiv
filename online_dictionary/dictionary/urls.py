@@ -28,5 +28,9 @@ urlpatterns = [
 
     path('delete_sentence/',
          views.delete_example,
-         name='delete_example')
+         name='delete_example'),
+
+    path('<int:category_id>/<int:word_id>/edit_word/',
+         views.edit_word,
+         name='edit_word'),
 ]

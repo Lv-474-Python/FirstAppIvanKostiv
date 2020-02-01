@@ -2,42 +2,48 @@
 
 {% block white_workspace %}
     <div class="row h-100">
-        <div class="col-md-10">
-            <form class="w-100" action="{% url 'new_word' category  %}" method="post" id="add_word_form">
+        <div class="col-md-11">
+            <form class="w-100" action="{% url 'new_word' category %}" method="post" id="add_word_form">
                 {% csrf_token %}
                 <div id="word-form-inputs">
                     <div class="row ml-0 mt-4 word-label">
                         <h5>what?</h5>
                     </div>
                     <div class="row ml-3">
-                        <input class="form-control w-100 word-input word-title p-2" type="text"
-                               placeholder="Enter your word..."
-                               name="word">
+                        <div class="col-md-11 word-name word-title gray-background m-0 p-0">
+                            <input class="form-control w-100 word-input word-title p-2" type="text"
+                                   placeholder="Enter your word..."
+                                   name="word">
+                        </div>
                     </div>
 
                     <div class="row ml-0 mt-4 word-label">
                         <h5>what is it?</h5>
                     </div>
 
-                    <div class="row ml-3 gray-background">
+                    <div class="row ml-3">
 
-                    <textarea class="form-control w-100 word-input p-2"
-                              placeholder="Enter your description..."
-                              rows="6"
-                              name="description"></textarea>
+                        <div class="col-md-11 gray-background m-0 p-0">
+                            <textarea class="form-control w-100 word-input p-2"
+                                      placeholder="Enter your description..."
+                                      rows="6"
+                                      name="description"></textarea>
+                        </div>
                     </div>
 
                     <div class="row ml-0 mt-4 word-label">
                         <h5>examples?</h5>
                     </div>
 
-                    <div class="row ml-3">
-                        <input class="form-control w-100 word-input p-2 sentence_input"
-                               type="text"
-                               placeholder="Enter a sentence with this word..."
-                               onblur="addNewSentenceInput(this)"
-                               id="last_sentence"
-                               name="sentences">
+                    <div class="row mt-1 ml-3">
+                        <div class="col-md-11 p-0 m-0 sentence-wrapper gray-background">
+                            <input class="form-control w-100 word-input p-2 sentence_input"
+                                   type="text"
+                                   placeholder="Enter a sentence with this word..."
+                                   onblur="addNewSentenceInput(this)"
+                                   id="last_sentence"
+                                   name="sentences">
+                        </div>
                     </div>
 
                 </div>

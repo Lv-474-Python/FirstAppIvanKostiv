@@ -8,8 +8,8 @@
             </div>
 
             <div class="row ml-3">
-                <div class="col-md-11 word-name word-title gray-background m-0 p-0">
-                    <h3 class="my-auto p-2">{{ word }}</h3>
+                <div class="col-md-11 word-name word-title gray-background m-0 px-0 py-1">
+                    <h4 class="my-auto p-2">{{ word }}</h4>
                 </div>
             </div>
 
@@ -32,9 +32,9 @@
             </div>
 
             {% for sentence in word.sentences.all %}
-                <div class="row mt-2 ml-3" id="{{ sentence.id }}">
-                    <div class="col-md-11 gray-background p-0 m-0">
-                        <h5 class="my-auto p-2" name="sentences">{{ sentence }}</h5>
+                <div class="row mt-1 ml-3" id="{{ sentence.id }}">
+                    <div class="col-md-11 gray-background px-0 m-0 py-1">
+                        <h6 class="my-auto p-2" name="sentences">{{ sentence }}</h6>
                     </div>
                     <div class="col-md-1 my-auto icon">
                         {% csrf_token %}
@@ -70,7 +70,8 @@
 
             <div class="row">
                 <div class="mx-auto">
-                    <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg"
+                    onclick="document.location.replace('edit_word')">
                         <path d="M12.8334 4.66669H4.66671C4.04787 4.66669 3.45438 4.91252 3.01679 5.3501C2.57921 5.78769 2.33337 6.38118 2.33337 7.00002V23.3334C2.33337 23.9522 2.57921 24.5457 3.01679 24.9833C3.45438 25.4209 4.04787 25.6667 4.66671 25.6667H21C21.6189 25.6667 22.2124 25.4209 22.65 24.9833C23.0875 24.5457 23.3334 23.9522 23.3334 23.3334V15.1667"
                               stroke="#0F52BA" stroke-width="2.66667" stroke-linecap="round"
                               stroke-linejoin="round"></path>
