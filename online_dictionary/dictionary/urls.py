@@ -24,5 +24,9 @@ urlpatterns = [
 
     path('add_language/',
          views.add_new_language,
-         name='new_language')
+         name='new_language'),
+
+    path('delete_sentence/',
+         views.delete_example,
+         name='delete_example')
 ]

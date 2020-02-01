@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
+from django.http import QueryDict, HttpResponse
 from .models import Category, Word, Example
 
 
@@ -46,29 +47,34 @@ def category_view(request, category_id):
 
 @login_required(login_url='/sign_in/')
 def word_view(request, category_id, word_id):
-    category = get_object_or_404(Category, id=category_id)
-    word = get_object_or_404(Word, id=word_id)
+    if request.method == 'DELETE':
+        Word.objects.filter(id=word_id).delete()
+        return HttpResponse()
 
-    return render(
-        request,
-        'dictionary/word_view.html',
-        {
-            'categories': Category.objects.filter(
-                user=request.user,
-                category=None,
-            ),
+    else:
+        category = get_object_or_404(Category, id=category_id)
+        word = get_object_or_404(Word, id=word_id)
 
-            'category': Category.objects.get(
-                user=request.user,
-                id=category.id,
-            ),
+        return render(
+            request,
+            'dictionary/word_view.html',
+            {
+                'categories': Category.objects.filter(
+                    user=request.user,
+                    category=None,
+                ),
 
-            'word': Word.objects.get(
-                category=category,
-                id=word.id,
-            ),
-        }
-    )
+                'category': Category.objects.get(
+                    user=request.user,
+                    id=category.id,
+                ),
+
+                'word': Word.objects.get(
+                    category=category,
+                    id=word.id,
+                ),
+            }
+        )
 
 
 @login_required(login_url='/sign_in/')
@@ -177,3 +183,12 @@ def add_new_language(request):
             ),
         }
     )
+
+
+@login_required(login_url='/sign_in/')
+def delete_example(request):
+    if request.method == "DELETE":
+        sentence = QueryDict(request.body)
+        Example.objects.filter(id=sentence.get('sentence_id')).delete()
+
+    return HttpResponse()
