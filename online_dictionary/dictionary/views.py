@@ -1,16 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import logout
 from django.http import QueryDict, HttpResponse, JsonResponse
 from .models import Category, Word, Example
 
 
 @login_required(login_url='/sign_in/')
 def main_page(request):
-    if request.method == "POST":
-        logout(request)
-        return redirect("/sign_in/")
-
     return render(
         request,
         'dictionary/main_page.html',
@@ -28,7 +23,6 @@ def main_page(request):
 
 @login_required(login_url='/sign_in/')
 def category_view(request, category_id):
-
     if request.method == "DELETE":
         category = Category.objects.get(id=category_id)
         if category.category is not None:

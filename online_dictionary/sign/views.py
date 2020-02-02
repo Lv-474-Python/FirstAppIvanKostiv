@@ -1,6 +1,6 @@
-from django.http import HttpResponseRedirect
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
-from django.contrib.auth import login
+from django.contrib.auth import login, logout
 from . import forms
 
 
@@ -13,7 +13,7 @@ def sign_up(request):
         form = forms.SignUpForm(request.POST)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect("/sign_in")
+            return redirect('sign_in')
 
     return render(request, "sign/sign_up.html", {'form': form})
 
@@ -31,3 +31,8 @@ def sign_in(request):
             return redirect("/main_page/")
 
     return render(request, "sign/sign_in.html", {'form': form})
+
+
+def logout_view(request):
+    logout(request)
+    return HttpResponse()

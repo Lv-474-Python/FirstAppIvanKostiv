@@ -1,47 +1,75 @@
 {% extends "dictionary/left_menu_template.html" %}
 
+{% load static %}
+
+{% block head %}
+    {{ block.super }}
+    <script src="{% static 'js/logout.js' %}"></script>
+{% endblock %}
+
 {% block white_workspace %}
     <div class="row">
-        <h2 class="mt-3 ml-4 mb-1">Languages</h2>
-    </div>
-    <div class="row">
-        <hr class="ml-4 w-75">
-    </div>
-    <div class="mt-1">
-        {% for category in categories %}
-            <div class="row ml-3">
-                <a class="category ml-3" href="{% url 'category_view' category.id %}">
-                    <h4>{{ category }}</h4>
-                </a>
+        <div class="col-md-11">
+            <div class="row">
+                <h2 class="mt-3 ml-4 mb-1">Languages</h2>
             </div>
-        {% endfor %}
+            <div class="row">
+                <hr class="ml-4 w-75">
+            </div>
+            <div class="mt-1">
+                {% for category in categories %}
+                    <div class="row ml-3">
+                        <a class="category ml-3" href="{% url 'category_view' category.id %}">
+                            <h4>{{ category }}</h4>
+                        </a>
+                    </div>
+                {% endfor %}
 
-    </div>
+            </div>
 
-    <div class="row">
-        <a href="{% url 'new_language' %}" class="mx-auto add-link"><h5>Add new language</h5></a>
-    </div>
+            <div class="row">
+                <a href="{% url 'new_language' %}" class="mx-auto add-link"><h5>Add new language</h5></a>
+            </div>
 
-    <div class="row">
-        <h4 class="mt-3 ml-4 mb-1">Latest categories</h4>
-    </div>
-    <div class="row">
-        <hr class="ml-4 w-50">
-    </div>
-    <div class="mt-1">
-        {% if latest_categories %}
-            {% for category in latest_categories %}
-                <div class="row ml-3">
-                    <a class="category ml-3" href="{% url 'category_view' category.id %}">
-                        <h5>{{ category }}</h5>
-                    </a>
+            <div class="row">
+                <h4 class="mt-3 ml-4 mb-1">Latest categories</h4>
+            </div>
+            <div class="row">
+                <hr class="ml-4 w-50">
+            </div>
+            <div class="mt-1">
+                {% if latest_categories %}
+                    {% for category in latest_categories %}
+                        <div class="row ml-3">
+                            <a class="category ml-3" href="{% url 'category_view' category.id %}">
+                                <h5>{{ category }}</h5>
+                            </a>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="row mt-3">
+                        <h5 class="mx-auto">No categories :(</h5>
+                    </div>
+                {% endif %}
+
+            </div>
+        </div>
+        <div class="col-md-1">
+            {% csrf_token %}
+            <div class="row mt-4">
+                <div class="mx-auto">
+                    <svg width="32"
+                         height="32"
+                         viewBox="0 0 32 32"
+                         fill="none"
+                         xmlns="http://www.w3.org/2000/svg"
+                         onclick="logout()">
+
+                        <path d="M21.3333 22.6667V18.6667H12V13.3333H21.3333V9.33332L28 16L21.3333 22.6667ZM18.6667 2.66666C19.3739 2.66666 20.0522 2.94761 20.5523 3.4477C21.0524 3.9478 21.3333 4.62608 21.3333 5.33332V7.99999H18.6667V5.33332H6.66667V26.6667H18.6667V24H21.3333V26.6667C21.3333 27.3739 21.0524 28.0522 20.5523 28.5523C20.0522 29.0524 19.3739 29.3333 18.6667 29.3333H6.66667C5.95942 29.3333 5.28115 29.0524 4.78105 28.5523C4.28095 28.0522 4 27.3739 4 26.6667V5.33332C4 4.62608 4.28095 3.9478 4.78105 3.4477C5.28115 2.94761 5.95942 2.66666 6.66667 2.66666H18.6667Z"
+                              fill="#0F52BA"></path>
+                    </svg>
                 </div>
-            {% endfor %}
-        {% else %}
-            <div class="row mt-3">
-                <h5 class="mx-auto">No categories :(</h5>
             </div>
-        {% endif %}
-
+        </div>
     </div>
 {% endblock %}
