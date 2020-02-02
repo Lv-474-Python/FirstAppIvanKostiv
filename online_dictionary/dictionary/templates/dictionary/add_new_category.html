@@ -1,5 +1,12 @@
 {% extends "dictionary/left_menu_template.html" %}
 
+{% load static %}
+
+{% block head %}
+    {{ block.super }}
+    <script src="{% static 'js/dynamicalInputs.js' %}"></script>
+{% endblock %}
+
 {% block white_workspace %}
     <div class="row h-100">
         <div class="col-md-10">

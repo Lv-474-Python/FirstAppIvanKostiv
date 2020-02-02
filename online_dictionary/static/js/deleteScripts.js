@@ -1,4 +1,4 @@
-function deleteSentence(sentence_id) {
+function deleteScripts(sentence_id) {
     let csrf_token = document.getElementsByName("csrfmiddlewaretoken")[0].value;
 
     if (document.getElementsByName('sentences').length === 1) {

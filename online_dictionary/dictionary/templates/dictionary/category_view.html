@@ -1,5 +1,12 @@
 {% extends "dictionary/left_menu_template.html" %}
 
+{% load static %}
+
+{% block head %}
+    {{ block.super }}
+    <script src="{% static 'js/deleteScripts.js' %}"></script>
+{% endblock %}
+
 {% block white_workspace %}
 
     <div class="row">
