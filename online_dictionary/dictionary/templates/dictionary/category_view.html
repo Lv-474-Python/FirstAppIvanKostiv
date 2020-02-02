@@ -1,66 +1,101 @@
 {% extends "dictionary/left_menu_template.html" %}
 
 {% block white_workspace %}
-    <div class="row">
-        <h2 class="mt-3 ml-4 mb-1">{{ category }}</h2>
-    </div>
-    <div class="row">
-        <hr class="ml-4 w-75">
-    </div>
 
     <div class="row">
-        <h4 class="mt-3 ml-4 mb-0">Words:</h4>
-    </div>
+        <div class="col-md-11">
+            <div class="row">
+                <h2 class="mt-3 ml-4 mb-1">{{ category }}</h2>
+            </div>
+            <div class="row">
+                <hr class="ml-4 w-75">
+            </div>
 
-    <div class="row ml-2 mb-1">
-        <hr class="w-50">
-    </div>
+            <div class="row">
+                <h4 class="mt-3 ml-4 mb-0">Words:</h4>
+            </div>
 
-    {% if category.words.all %}
-        {% for word in category.words.all %}
-            <div class="row ml-3">
-                <a class="word ml-3" href="{% url 'word_view' category.id word.id %}">
-                    <h5>{{ word }}</h5>
+            <div class="row ml-2 mb-1">
+                <hr class="w-50">
+            </div>
+
+            {% if category.words.all %}
+                {% for word in category.words.all %}
+                    <div class="row ml-3">
+                        <a class="word ml-3" href="{% url 'word_view' category.id word.id %}">
+                            <h5>{{ word }}</h5>
+                        </a>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="row mt-3">
+                    <h5 class="mx-auto">No words :(</h5>
+                </div>
+            {% endif %}
+
+            <div class="row mt-0">
+                <a class="mx-auto add-link" href="{% url 'new_word' category.id %}">
+                    <h5>Add new word</h5>
                 </a>
             </div>
-        {% endfor %}
-    {% else %}
-        <div class="row mt-3">
-            <h5 class="mx-auto">No words :(</h5>
-        </div>
-    {% endif %}
 
-    <div class="row mt-0">
-        <a class="mx-auto add-link" href="{% url 'new_word' category.id %}">
-            <h5>Add new word</h5>
-        </a>
-    </div>
+            <div class="row mt-3">
+                <h4 class="mt-1 ml-4 mb-0">Categories:</h4>
+            </div>
 
-    <div class="row mt-3">
-        <h4 class="mt-1 ml-4 mb-0">Categories:</h4>
-    </div>
+            <div class="row ml-2 mb-1">
+                <hr class="w-50">
+            </div>
 
-    <div class="row ml-2 mb-1">
-        <hr class="w-50">
-    </div>
+            {% if category.categories.all %}
+                {% for children in category.categories.all %}
+                    <div class="row ml-3">
+                        <a class="category ml-3" href="{% url 'category_view' children.id %}">
+                            <h5>{{ children }}</h5>
+                        </a>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="row mt-3">
+                    <h5 class="mx-auto">No categories :(</h5>
+                </div>
+            {% endif %}
 
-    {% if category.categories.all %}
-        {% for children in category.categories.all %}
-            <div class="row ml-3">
-                <a class="category ml-3" href="{% url 'category_view' children.id %}">
-                    <h5>{{ children }}</h5>
+            <div class="row mt-0">
+                <a class="mx-auto add-link" href="{% url 'new_category' category.id %}">
+                    <h5>Add new category</h5>
                 </a>
             </div>
-        {% endfor %}
-    {% else %}
-        <div class="row mt-3">
-            <h5 class="mx-auto">No categories :(</h5>
         </div>
-    {% endif %}
 
-    <div class="row mt-0">
-        <a class="mx-auto add-link" href="{% url 'new_category' category.id %}">
-            <h5>Add new category</h5>
-        </a>
+        <div class="col-md-1">
+            {% csrf_token %}
+            <div class="row mt-4">
+                <div class="mx-auto">
+                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"
+                         onclick="deleteCategory({{ category.id }})">
+                        <path d="M11.25 5.75H11C11.1375 5.75 11.25 5.6375 11.25 5.5V5.75H20.75V5.5C20.75 5.6375 20.8625 5.75 21 5.75H20.75V8H23V5.5C23 4.39688 22.1031 3.5 21 3.5H11C9.89687 3.5 9 4.39688 9 5.5V8H11.25V5.75ZM27 8H5C4.44687 8 4 8.44688 4 9V10C4 10.1375 4.1125 10.25 4.25 10.25H6.1375L6.90938 26.5938C6.95938 27.6594 7.84063 28.5 8.90625 28.5H23.0938C24.1625 28.5 25.0406 27.6625 25.0906 26.5938L25.8625 10.25H27.75C27.8875 10.25 28 10.1375 28 10V9C28 8.44688 27.5531 8 27 8ZM22.8531 26.25H9.14688L8.39062 10.25H23.6094L22.8531 26.25Z"
+                              fill="#0F52BA"></path>
+                    </svg>
+                </div>
+
+            </div>
+
+            <div class="row">
+                <div class="mx-auto">
+                    <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12.8334 4.66669H4.66671C4.04787 4.66669 3.45438 4.91252 3.01679 5.3501C2.57921 5.78769 2.33337 6.38118 2.33337 7.00002V23.3334C2.33337 23.9522 2.57921 24.5457 3.01679 24.9833C3.45438 25.4209 4.04787 25.6667 4.66671 25.6667H21C21.6189 25.6667 22.2124 25.4209 22.65 24.9833C23.0875 24.5457 23.3334 23.9522 23.3334 23.3334V15.1667"
+                              stroke="#0F52BA" stroke-width="2.66667" stroke-linecap="round"
+                              stroke-linejoin="round"></path>
+                        <path d="M21.5834 2.91668C22.0475 2.45255 22.677 2.1918 23.3334 2.1918C23.9897 2.1918 24.6192 2.45255 25.0834 2.91668C25.5475 3.38081 25.8082 4.0103 25.8082 4.66668C25.8082 5.32305 25.5475 5.95255 25.0834 6.41668L14 17.5L9.33337 18.6667L10.5 14L21.5834 2.91668Z"
+                              stroke="#0F52BA" stroke-width="2.66667" stroke-linecap="round"
+                              stroke-linejoin="round"></path>
+                    </svg>
+                </div>
+
+            </div>
+        </div>
     </div>
+
+
 {% endblock %}

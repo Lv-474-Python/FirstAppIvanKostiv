@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
-from django.http import QueryDict, HttpResponse
+from django.http import QueryDict, HttpResponse, JsonResponse
 from .models import Category, Word, Example
 
 
@@ -28,6 +28,17 @@ def main_page(request):
 
 @login_required(login_url='/sign_in/')
 def category_view(request, category_id):
+
+    if request.method == "DELETE":
+        category = Category.objects.get(id=category_id)
+        if category.category is not None:
+            data = {'parent_id': category.category.id}
+        else:
+            data = {'parent_id': None}
+
+        category.delete()
+        return JsonResponse(data)
+
     category = get_object_or_404(Category, id=category_id)
     return render(
         request,
