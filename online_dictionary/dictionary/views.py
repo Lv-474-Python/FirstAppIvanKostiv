@@ -6,18 +6,20 @@ from .models import Category, Word, Example
 
 @login_required(login_url='/sign_in/')
 def main_page(request):
+    context = {
+        'user': request.user,
+        'categories': Category.objects.filter(
+            user=request.user,
+            category=None,
+        ),
+        'latest_categories':
+            Category.objects.order_by('id').filter(user=request.user).reverse()[:3]
+    }
+
     return render(
         request,
         'dictionary/main_page.html',
-        {
-            'user': request.user,
-            'categories': Category.objects.filter(
-                user=request.user,
-                category=None,
-            ),
-            'latest_categories':
-                Category.objects.order_by('id').filter(user=request.user).reverse()[:3]
-        }
+        context
     )
 
 
@@ -34,17 +36,20 @@ def category_view(request, category_id):
         return JsonResponse(data)
 
     category = get_object_or_404(Category, id=category_id)
+
+    context = {
+        'categories': Category.objects.filter(
+            user=request.user,
+            category=None,
+        ),
+
+        'category': category
+    }
+
     return render(
         request,
         'dictionary/category_view.html',
-        {
-            'categories': Category.objects.filter(
-                user=request.user,
-                category=None,
-            ),
-
-            'category': category
-        }
+        context
     )
 
 
@@ -117,24 +122,41 @@ def add_new_category(request, category_id):
     if request.method == "POST":
         parent_category = get_object_or_404(Category, id=category_id)
 
-        new_category = Category(
+        category_name = request.POST.get('category')
+
+        new_category = Category.create(
             user=request.user,
-            name=request.POST.get('category'),
+            name=category_name,
             category=parent_category
         )
-        # TODO integrity error
-        new_category.save()
 
-        for subcategory in request.POST.getlist('subcategories')[:-1]:
-            new_subcategory = Category(
-                user=request.user,
-                name=subcategory,
-                category=new_category,
-            )
+        if new_category is not None:
+            for subcategory in request.POST.getlist('subcategories[]'):
+                new_subcategory = Category.create(
+                    user=request.user,
+                    name=subcategory,
+                    category=new_category
+                )
 
-            new_subcategory.save()
+                if new_subcategory is None:
+                    return JsonResponse(
+                        {
+                            'error': f'Subcategory {new_subcategory} is already exist',
+                        },
+                        status=403
+                    )
+            return JsonResponse(
+                {
+                    'new_category_id': str(new_category.id)
+                },
+                status=200)
 
-        return HttpResponse()
+        else:
+            return JsonResponse(
+                {
+                    'error': f"Category {request.POST.get('category')} is already exist",
+                },
+                status=403)
 
     context = {
         'categories': Category.objects.filter(
@@ -155,22 +177,24 @@ def add_new_category(request, category_id):
 def add_new_language(request):
     if request.method == "POST":
 
-        new_language = Category(
+        new_language = Category.create(
             user=request.user,
             name=request.POST.get('category'),
             category=None
         )
 
-        new_language.save()
+        if new_language is not None:
+            for subcategory in request.POST.getlist('subcategories')[:-1]:
+                new_subcategory = Category.create(
+                    user=request.user,
+                    name=subcategory,
+                    category=new_language,
+                )
 
-        for subcategory in request.POST.getlist('subcategories')[:-1]:
-            new_subcategory = Category(
-                user=request.user,
-                name=subcategory,
-                category=new_language,
-            )
-
-            new_subcategory.save()
+                if new_subcategory is None:
+                    return JsonResponse  # TODO subcategory is already exist
+        else:
+            return JsonResponse  # TODO language is already exist
 
         return redirect('category_view', new_language.id)
 
@@ -201,6 +225,7 @@ def delete_example(request):
 @login_required(login_url='/sign_in/')
 def edit_word(request, category_id, word_id):
     if request.method == "PUT":
+        # TODO add update method to the Word model
         word = get_object_or_404(Word, id=word_id)
 
         data = QueryDict(request.body)
@@ -214,10 +239,13 @@ def edit_word(request, category_id, word_id):
         Example.objects.filter(word=word).delete()
 
         for example in data.getlist('sentences[]')[:-1]:
-            sentence = Example(word=word,
-                               sentence=example)
-            # TODO Integrity Error
-            sentence.save()
+            sentence = Example.create(
+                word=word,
+                sentence=example
+            )
+
+            if sentence is None:
+                return JsonResponse  # TODO sentence is already exist
 
         return HttpResponse()
 

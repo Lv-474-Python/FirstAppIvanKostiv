@@ -28,8 +28,9 @@ function deleteSentence(sentence_id) {
             success: function () {
                 $(`#${sentence_id}`).remove();
             },
-            error: function () {
-                alert("Not cool")
+            error: function (errors) {
+                console.log(errors);
+                alert("Error:" + errors.responseText)
             }
         });
     }

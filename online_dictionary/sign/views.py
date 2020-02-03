@@ -15,7 +15,13 @@ def sign_up(request):
             form.save()
             return redirect('sign_in')
 
-    return render(request, "sign/sign_up.html", {'form': form})
+    context = {
+        'form': form
+    }
+
+    return render(request,
+                  "sign/sign_up.html",
+                  context)
 
 
 def sign_in(request):
@@ -30,7 +36,13 @@ def sign_in(request):
             login(request, user)
             return redirect("/main_page/")
 
-    return render(request, "sign/sign_in.html", {'form': form})
+    context = {
+        'form': form
+    }
+
+    return render(request,
+                  "sign/sign_in.html",
+                  context)
 
 
 def logout_view(request):
