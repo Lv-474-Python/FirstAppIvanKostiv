@@ -1,10 +1,19 @@
-function deleteScripts(sentence_id) {
+function deleteSentence(sentence_id) {
     let csrf_token = document.getElementsByName("csrfmiddlewaretoken")[0].value;
 
     if (document.getElementsByName('sentences').length === 1) {
         $(`#${sentence_id}`).children(".icon").css('display', 'none');
 
-        alert("Sorry, you can't delete last sentence")
+        $.toast({
+            heading: "Can't delete!",
+            text: 'You cannot delete the last sentence',
+            showHideTransition: 'slide',
+            icon: 'error',
+            hideAfter: 5000,
+            position: 'bottom-right',
+            loader: false,
+            stack: 2,
+        })
     } else {
         $.ajax({
             type: 'DELETE',

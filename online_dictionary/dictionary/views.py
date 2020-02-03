@@ -42,10 +42,8 @@ def category_view(request, category_id):
                 user=request.user,
                 category=None,
             ),
-            'category': Category.objects.get(
-                user=request.user,
-                id=category.id,
-            ),
+
+            'category': category
         }
     )
 
@@ -53,7 +51,8 @@ def category_view(request, category_id):
 @login_required(login_url='/sign_in/')
 def word_view(request, category_id, word_id):
     if request.method == 'DELETE':
-        Word.objects.filter(id=word_id).delete()
+        word = get_object_or_404(Word, id=word_id)
+        word.delete()
         return HttpResponse()
 
     category = get_object_or_404(Category, id=category_id)

@@ -20,7 +20,9 @@
                         <div class="col-md-11 word-name word-title gray-background m-0 p-0">
                             <input class="form-control w-100 word-input word-title p-2" type="text"
                                    placeholder="Enter your word..."
-                                   name="word">
+                                   name="word"
+                                   maxlength="50"
+                                   minlength="1">
                         </div>
                     </div>
 
@@ -34,7 +36,8 @@
                             <textarea class="form-control w-100 word-input p-2"
                                       placeholder="Enter your description..."
                                       rows="6"
-                                      name="description"></textarea>
+                                      name="description"
+                                      minlength="1"></textarea>
                         </div>
                     </div>
 
@@ -49,7 +52,8 @@
                                    placeholder="Enter a sentence with this word..."
                                    onblur="addNewSentenceInput(this)"
                                    id="last_sentence"
-                                   name="sentences">
+                                   name="sentences"
+                                   minlength="1">
                         </div>
                     </div>
 

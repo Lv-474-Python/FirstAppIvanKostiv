@@ -9,14 +9,6 @@ function addNewSentenceInput(sentence_input) {
                 .attr('onblur', 'addNewSentenceInput(this)')
                 .parent().parent()
                 .appendTo("#word-form-inputs")
-
-            // $.toast({
-            //     heading: 'Headings',
-            //     text: 'You can use the `heading` property to specify the heading of the toast message.',
-            //     showHideTransition: 'plain',
-            //     stack: 4,
-            //     icon: 'error',
-            // })
         }
     } else {
         if (sentence_input.getAttribute('id') !== 'last_sentence') {
