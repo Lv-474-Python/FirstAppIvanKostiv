@@ -55,28 +55,21 @@ def word_view(request, category_id, word_id):
         word.delete()
         return HttpResponse()
 
-    category = get_object_or_404(Category, id=category_id)
     word = get_object_or_404(Word, id=word_id)
+
+    context = {
+        'categories': Category.objects.filter(
+            user=request.user,
+            category=None,
+        ),
+        'category': word.category,
+        'word': word,
+    }
 
     return render(
         request,
         'dictionary/word_view.html',
-        {
-            'categories': Category.objects.filter(
-                user=request.user,
-                category=None,
-            ),
-
-            'category': Category.objects.get(
-                user=request.user,
-                id=category.id,
-            ),
-
-            'word': Word.objects.get(
-                category=category,
-                id=word.id,
-            ),
-        }
+        context
     )
 
 
@@ -85,6 +78,7 @@ def add_new_word(request, category_id):
     if request.method == "POST":
         category = get_object_or_404(Category, id=category_id)
 
+        # TODO integrity error
         new_word = Word(
             name=request.POST.get('word'),
             description=request.POST.get('description'),
@@ -102,17 +96,19 @@ def add_new_word(request, category_id):
 
         return redirect('word_view', category.id, new_word.id)
 
+    context = {
+        'categories': Category.objects.filter(
+            user=request.user,
+            category=None
+        ),
+
+        'category': category_id,
+    }
+
     return render(
         request,
         'dictionary/add_new_word.html',
-        {
-            'categories': Category.objects.filter(
-                user=request.user,
-                category=None
-            ),
-
-            'category': category_id,
-        }
+        context
     )
 
 
@@ -126,7 +122,7 @@ def add_new_category(request, category_id):
             name=request.POST.get('category'),
             category=parent_category
         )
-
+        # TODO integrity error
         new_category.save()
 
         for subcategory in request.POST.getlist('subcategories')[:-1]:
@@ -139,17 +135,19 @@ def add_new_category(request, category_id):
             new_subcategory.save()
 
         return HttpResponse()
+
+    context = {
+        'categories': Category.objects.filter(
+            user=request.user,
+            category=None
+        ),
+        'category': category_id,
+    }
+
     return render(
         request,
         'dictionary/add_new_category.html',
-        {
-            'categories': Category.objects.filter(
-                user=request.user,
-                category=None
-            ),
-
-            'category': category_id,
-        }
+        context
     )
 
 
@@ -176,23 +174,26 @@ def add_new_language(request):
 
         return redirect('category_view', new_language.id)
 
+    context = {
+        'categories': Category.objects.filter(
+            user=request.user,
+            category=None
+        ),
+    }
+
     return render(
         request,
         'dictionary/add_new_category.html',
-        {
-            'categories': Category.objects.filter(
-                user=request.user,
-                category=None
-            ),
-        }
+        context
     )
 
 
 @login_required(login_url='/sign_in/')
 def delete_example(request):
     if request.method == "DELETE":
-        sentence = QueryDict(request.body)
-        Example.objects.filter(id=sentence.get('sentence_id')).delete()
+        body_sentence = QueryDict(request.body)
+        db_sentence = get_object_or_404(Example, id=body_sentence.get('sentence_id'))
+        db_sentence.delete()
 
     return HttpResponse()
 
@@ -207,6 +208,7 @@ def edit_word(request, category_id, word_id):
         word.name = data.get('word')
         word.description = data.get('description')
 
+        # TODO Integrity error
         word.save()
 
         Example.objects.filter(word=word).delete()
@@ -214,24 +216,24 @@ def edit_word(request, category_id, word_id):
         for example in data.getlist('sentences[]')[:-1]:
             sentence = Example(word=word,
                                sentence=example)
-
+            # TODO Integrity Error
             sentence.save()
 
         return HttpResponse()
 
-    category = get_object_or_404(Category, id=category_id)
     word = get_object_or_404(Word, id=word_id)
+
+    context = {
+        'categories': Category.objects.filter(
+            user=request.user,
+            category=None
+        ),
+        'category': word.category,
+        'word': word,
+    }
 
     return render(
         request,
         'dictionary/edit_word.html',
-        {
-            'categories': Category.objects.filter(
-                user=request.user,
-                category=None
-            ),
-
-            'category': category,
-            'word': word
-        }
+        context
     )
