@@ -16,13 +16,16 @@ Array.prototype.unique = function () {
 };
 
 function validateAddNewCategory(categoryName, subcategoryList) {
-    let validator = {isValid: false, error_messages: []};
+    let validator = {isValid: true, error_messages: []};
     let clearSubcategoryList = clearList(subcategoryList);
     let uniqueSubcategory = clearSubcategoryList.unique();
 
+    subcategoryList.forEach((element) => {
+        $(element).removeClass('red-border');
+    });
+
     for (let i = 0; i < subcategoryList.length - 1; ++i) {
         if (categoryName.value === subcategoryList[i].value) {
-
             $(categoryName).addClass("red-border");
             $(subcategoryList[i]).addClass("red-border");
 
@@ -31,10 +34,6 @@ function validateAddNewCategory(categoryName, subcategoryList) {
                 validator.error_messages.push(
                     "You can't added similar subcategory"
                 )
-        } else {
-            $(categoryName).removeClass("red-border");
-            $(subcategoryList[i]).removeClass("red-border");
-            validator.isValid = true;
         }
 
         if (!validateMinLength(subcategoryList[i].value, 3)) {
@@ -45,11 +44,6 @@ function validateAddNewCategory(categoryName, subcategoryList) {
                 validator.error_messages.push(
                     "Category must contain at least 3 character"
                 );
-        } else {
-            $(categoryName).removeClass("red-border");
-            $(subcategoryList[i]).removeClass("red-border");
-
-            validator.isValid = true;
         }
     }
 
@@ -61,49 +55,33 @@ function validateAddNewCategory(categoryName, subcategoryList) {
             validator.error_messages.push(
                 "Category must contain at least 3 character"
             );
-    } else {
-        $(categoryName).removeClass("red-border");
-        validator.isValid = true;
     }
 
-
-    // validate unique subcategory
     if (uniqueSubcategory.length !== clearSubcategoryList.length) {
         validator.isValid = false;
-
         let notUnique = [];
-
         for (let i = 0; i < clearSubcategoryList.length;) {
             let element = clearSubcategoryList.shift();
-
             for (let j = 0; j < clearSubcategoryList.length; ++j) {
                 if (clearSubcategoryList[j] === element) {
                     if (!notUnique.contains(element)) {
                         notUnique.push(element);
                     }
-                    clearSubcategoryList.splice(j, 1)
+                    clearSubcategoryList.splice(j, 1);
                     break;
                 }
             }
         }
-
         for (let i = 0; i < subcategoryList.length - 1; ++i) {
             if (notUnique.contains(subcategoryList[i].value)) {
                 $(subcategoryList[i]).addClass('red-border')
-            } else {
-                $(subcategoryList[i]).removeClass('red-border')
             }
         }
-
         if (!validator.error_messages.contains("You can't added similar subcategory"))
             validator.error_messages.push(
                 "You can't added similar subcategory"
             );
-
-    } else {
-        validator.isValid = true;
     }
-
 
     return validator
 }
