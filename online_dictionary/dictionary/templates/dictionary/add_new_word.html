@@ -5,65 +5,68 @@
 {% block head %}
     {{ block.super }}
     <script src="{% static 'js/dynamicalInputs.js' %}"></script>
+    <script src="{% static 'js/validationScripts.js' %}"></script>
+    <script src="{% static 'js/addNewScripts.js' %}"></script>
 {% endblock %}
 
 {% block white_workspace %}
     <div class="row h-100">
         <div class="col-md-11">
-            <form class="w-100" action="{% url 'new_word' category %}" method="post" id="add_word_form">
-                {% csrf_token %}
-                <div id="word-form-inputs">
-                    <div class="row ml-0 mt-4 word-label">
-                        <h5>what?</h5>
+            {#            <form class="w-100" action="{% url 'new_word' category %}" method="post" id="add_word_form">#}
+            {% csrf_token %}
+            <div id="word-form-inputs">
+                <div class="row ml-0 mt-4 word-label">
+                    <h5>what?</h5>
+                </div>
+                <div class="row ml-3">
+                    <div class="col-md-11 word-name word-title gray-background m-0 p-0">
+                        <input class="form-control w-100 word-input word-title p-2" type="text"
+                               placeholder="Enter your word..."
+                               name="word"
+                               maxlength="50"
+                               minlength="1">
                     </div>
-                    <div class="row ml-3">
-                        <div class="col-md-11 word-name word-title gray-background m-0 p-0">
-                            <input class="form-control w-100 word-input word-title p-2" type="text"
-                                   placeholder="Enter your word..."
-                                   name="word"
-                                   maxlength="50"
-                                   minlength="1">
-                        </div>
-                    </div>
+                </div>
 
-                    <div class="row ml-0 mt-4 word-label">
-                        <h5>what is it?</h5>
-                    </div>
+                <div class="row ml-0 mt-4 word-label">
+                    <h5>what is it?</h5>
+                </div>
 
-                    <div class="row ml-3">
+                <div class="row ml-3">
 
-                        <div class="col-md-11 gray-background m-0 p-0">
+                    <div class="col-md-11 gray-background m-0 p-0">
                             <textarea class="form-control w-100 word-input p-2"
                                       placeholder="Enter your description..."
                                       rows="6"
                                       name="description"
                                       minlength="1"></textarea>
-                        </div>
                     </div>
-
-                    <div class="row ml-0 mt-4 word-label">
-                        <h5>examples?</h5>
-                    </div>
-
-                    <div class="row mt-1 ml-3">
-                        <div class="col-md-11 p-0 m-0 sentence-wrapper gray-background">
-                            <input class="form-control w-100 word-input p-2 sentence_input"
-                                   type="text"
-                                   placeholder="Enter a sentence with this word..."
-                                   onblur="addNewSentenceInput(this)"
-                                   id="last_sentence"
-                                   name="sentences"
-                                   minlength="1">
-                        </div>
-                    </div>
-
                 </div>
 
-                <div class="row">
-                    <button type="submit" class="btn workspace-button mx-auto my-4 px-5">Save</button>
+                <div class="row ml-0 mt-4 word-label">
+                    <h5>examples?</h5>
                 </div>
 
-            </form>
+                <div class="row mt-1 ml-3">
+                    <div class="col-md-11 p-0 m-0 sentence-wrapper gray-background">
+                        <input class="form-control w-100 word-input p-2 sentence_input"
+                               type="text"
+                               placeholder="Enter a sentence with this word..."
+                               onblur="addNewSentenceInput(this)"
+                               id="last_sentence"
+                               name="sentences"
+                               minlength="1">
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row">
+                <button type="button" onclick="addNewWord()" class="btn workspace-button mx-auto my-4 px-5">Save
+                </button>
+            </div>
+
+            {#            </form>#}
         </div>
     </div>
 {% endblock %}

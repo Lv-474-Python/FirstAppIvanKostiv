@@ -1,91 +1,153 @@
-Array.prototype.contains = function (v) {
-    for (let i = 0; i < this.length; i++) {
-        if (this[i] === v) return true;
-    }
-    return false;
-};
-
-Array.prototype.unique = function () {
-    let arr = [];
-    for (let i = 0; i < this.length; i++) {
-        if (!arr.contains(this[i])) {
-            arr.push(this[i]);
-        }
-    }
-    return arr;
-};
-
-function validateAddNewCategory(categoryName, subcategoryList) {
+function validateAddNewCategory(category, subcategories) {
     let validator = {isValid: true, error_messages: []};
-    let clearSubcategoryList = clearList(subcategoryList);
-    let uniqueSubcategory = clearSubcategoryList.unique();
 
-    subcategoryList.forEach((element) => {
+    $(category).removeClass('red-border');
+
+    subcategories.forEach((element) => {
         $(element).removeClass('red-border');
     });
 
-    for (let i = 0; i < subcategoryList.length - 1; ++i) {
-        if (categoryName.value === subcategoryList[i].value) {
-            $(categoryName).addClass("red-border");
-            $(subcategoryList[i]).addClass("red-border");
+    validateCategory(category, validator);
+    validateUniqueSubcategory(subcategories, validator);
 
-            validator.isValid = false;
-            if (!validator.error_messages.contains("You can't added similar subcategory"))
-                validator.error_messages.push(
-                    "You can't added similar subcategory"
-                )
-        }
-
-        if (!validateMinLength(subcategoryList[i].value, 3)) {
-            $(subcategoryList[i]).addClass('red-border');
-
-            validator.isValid = false;
-            if (!validator.error_messages.contains("Category must contain at least 3 character"))
-                validator.error_messages.push(
-                    "Category must contain at least 3 character"
-                );
-        }
-    }
-
-    if (!validateMinLength(categoryName.value, 3)) {
-        $(categoryName).addClass("red-border");
-
-        validator.isValid = false;
-        if (!validator.error_messages.contains("Category must contain at least 3 character"))
-            validator.error_messages.push(
-                "Category must contain at least 3 character"
-            );
-    }
-
-    if (uniqueSubcategory.length !== clearSubcategoryList.length) {
-        validator.isValid = false;
-        let notUnique = [];
-        for (let i = 0; i < clearSubcategoryList.length;) {
-            let element = clearSubcategoryList.shift();
-            for (let j = 0; j < clearSubcategoryList.length; ++j) {
-                if (clearSubcategoryList[j] === element) {
-                    if (!notUnique.contains(element)) {
-                        notUnique.push(element);
-                    }
-                    clearSubcategoryList.splice(j, 1);
-                    break;
-                }
-            }
-        }
-        for (let i = 0; i < subcategoryList.length - 1; ++i) {
-            if (notUnique.contains(subcategoryList[i].value)) {
-                $(subcategoryList[i]).addClass('red-border')
-            }
-        }
-        if (!validator.error_messages.contains("You can't added similar subcategory"))
-            validator.error_messages.push(
-                "You can't added similar subcategory"
-            );
+    for (let i = 0; i < subcategories.length - 1; ++i) {
+        validateMinLengthSubcategory(subcategories[i], validator);
+        validateCategoryAndSubcategorySimilar(category, subcategories[i], validator);
     }
 
     return validator
 }
 
+function validateAddNewWord(word, description, sentences) {
+    let validator = {isValid: true, error_messages: []};
+
+    $(word).removeClass('red-border');
+    $(description).removeClass('red-border');
+
+    sentences.forEach((element) => {
+        $(element).removeClass('red-border');
+    });
+
+    validateWord(word, validator);
+    validateDescription(description, validator);
+    validateUniqueSentences(sentences, validator);
+
+    for (let i = 0; i < sentences.length - 1; ++i) {
+        validateWordAndSentenceSimilar(word, sentences[i], validator);
+        validateDescriptionAndSentenceSimilar(description, sentences[i], validator);
+        validateMinLengthSentence(sentences[i], validator);
+    }
+
+    return validator
+}
+
+function validateCategory(category, validator) {
+    if (!validateMinLength(category.value, 3)) {
+        $(category).addClass("red-border");
+
+        addErrorToValidator(validator, "Category must contain at least 3 character");
+    }
+
+}
+
+function validateUniqueSubcategory(subcategories, validator) {
+    let clearSubcategoryList = stringsArrayToLowerCase(clearList(subcategories));
+    let uniqueSubcategory = clearSubcategoryList.unique();
+
+    if (uniqueSubcategory.length !== clearSubcategoryList.length) {
+        validator.isValid = false;
+        let notUnique = getNotUniqueArray(clearSubcategoryList);
+        for (let i = 0; i < subcategories.length - 1; ++i) {
+            if (notUnique.contains(subcategories[i].value.toLowerCase())) {
+                $(subcategories[i]).addClass('red-border')
+            }
+        }
+        addErrorToValidator(validator, "You can't added similar subcategory");
+    }
+}
+
+function validateMinLengthSubcategory(subcategory, validator) {
+    if (!validateMinLength(subcategory.value, 3)) {
+        $(subcategory).addClass('red-border');
+
+        addErrorToValidator(validator, "Category must contain at least 3 character");
+    }
+}
+
+function validateCategoryAndSubcategorySimilar(category, subcategory, validator) {
+    if (category.value.toLowerCase() === subcategory.value.toLowerCase()) {
+        $(category).addClass("red-border");
+        $(subcategory).addClass("red-border");
+
+        addErrorToValidator(validator, "The title of the main category and the sub-category match");
+    }
+}
+
+function validateWord(word, validator) {
+    if (!validateMinLength(word.value, 3)) {
+        $(word).addClass("red-border");
+
+        addErrorToValidator(validator, "Word must contain at least 3 character");
+    }
+}
+
+function validateDescription(description, validator) {
+    if (!validateMinLength(description.value, 3)) {
+        $(description).addClass("red-border");
+
+        addErrorToValidator(validator, "Description must contain at least 3 character");
+    }
+}
+
+function validateUniqueSentences(sentences, validator) {
+    let clearSentences = stringsArrayToLowerCase(clearList(sentences));
+    let uniqueSentences = clearSentences.unique();
+    if (uniqueSentences.length !== clearSentences.length) {
+        validator.isValid = false;
+        let notUnique = getNotUniqueArray(clearSentences);
+
+        for (let i = 0; i < sentences.length - 1; ++i) {
+            if (notUnique.contains(sentences[i].value.toLowerCase())) {
+                $(sentences[i]).addClass('red-border');
+            }
+        }
+        addErrorToValidator(validator, "You can't added similar sentences");
+    }
+}
+
+function validateWordAndSentenceSimilar(word, sentence, validator) {
+    if (word.value.toLowerCase() === sentence.value.toLowerCase()) {
+        $(word).addClass("red-border");
+        $(sentence).addClass("red-border");
+
+        addErrorToValidator(validator, "Sentences can not consist only of words entered");
+    }
+}
+
+function validateDescriptionAndSentenceSimilar(description, sentence, validator) {
+    if (description.value.toLowerCase() === sentence.value.toLowerCase()) {
+        $(description).addClass("red-border");
+        $(sentence).addClass("red-border");
+
+        addErrorToValidator(validator, "A sentence cannot consist only of a description of the word");
+    }
+}
+
+function validateMinLengthSentence(sentence, validator) {
+    if (!validateMinLength(sentence.value, 3)) {
+        $(sentence).addClass('red-border');
+        addErrorToValidator(validator, "Sentence must contain at least 3 character");
+    }
+}
+
 function validateMinLength(value, minLength) {
     return value.length >= minLength
+}
+
+function addErrorToValidator(validator, message) {
+    validator.isValid = false;
+    if (!validator.error_messages.contains(message))
+        validator.error_messages.push(
+            message
+        );
 }

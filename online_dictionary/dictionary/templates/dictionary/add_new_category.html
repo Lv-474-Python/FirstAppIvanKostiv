@@ -23,7 +23,8 @@
                     <div class="row ml-3">
                         <input class="form-control w-100 word-input word-title p-2" type="text"
                                placeholder="Enter your category..."
-                               name="category">
+                               name="category"
+                               maxlength="50">
                     </div>
                 {% else %}
                     <div class="row ml-0 mt-4 word-label">
@@ -33,7 +34,8 @@
                     <div class="row ml-3">
                         <input class="form-control w-100 word-input word-title p-2" type="text"
                                placeholder="Enter your languages..."
-                               name="category">
+                               name="category"
+                               maxlength="50">
                     </div>
                 {% endif %}
 
@@ -47,7 +49,8 @@
                            placeholder="Enter subcategory..."
                            onblur="addNewSubcategoryInput(this)"
                            id="last_subcategory"
-                           name="subcategories">
+                           name="subcategories"
+                           maxlength="50">
                 </div>
 
             </div>

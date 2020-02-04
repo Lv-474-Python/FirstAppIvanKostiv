@@ -83,23 +83,36 @@ def add_new_word(request, category_id):
     if request.method == "POST":
         category = get_object_or_404(Category, id=category_id)
 
-        # TODO integrity error
-        new_word = Word(
+        new_word = Word.create(
             name=request.POST.get('word'),
             description=request.POST.get('description'),
             category=category
         )
-        new_word.save()
 
-        for sentence in request.POST.getlist('sentences')[:-1]:
-            new_example = Example(
-                sentence=sentence,
-                word=new_word,
-            )
+        if new_word is not None:
+            for sentence in request.POST.getlist('sentences[]'):
+                new_example = Example.create(
+                    sentence=sentence,
+                    word=new_word,
+                )
 
-            new_example.save()
+                if new_example is None:
+                    return JsonResponse({
+                        'error': f'Example {new_example} is already exist',
+                    },
+                        status=403
+                    )
 
-        return redirect('word_view', category.id, new_word.id)
+            return JsonResponse({
+                'new_category_id': str(new_word.category.id),
+                'new_word_id': str(new_word.id)
+            },
+                status=200)
+        else:
+            return JsonResponse({
+                'error': f"Word {request.POST.get('word')} is already exist",
+            },
+                status=403)
 
     context = {
         'categories': Category.objects.filter(
@@ -139,23 +152,20 @@ def add_new_category(request, category_id):
                 )
 
                 if new_subcategory is None:
-                    return JsonResponse(
-                        {
-                            'error': f'Subcategory {new_subcategory} is already exist',
-                        },
+                    return JsonResponse({
+                        'error': f'Subcategory {new_subcategory} is already exist',
+                    },
                         status=403
                     )
-            return JsonResponse(
-                {
-                    'new_category_id': str(new_category.id)
-                },
+            return JsonResponse({
+                'new_category_id': str(new_category.id)
+            },
                 status=200)
 
         else:
-            return JsonResponse(
-                {
-                    'error': f"Category {request.POST.get('category')} is already exist",
-                },
+            return JsonResponse({
+                'error': f"Category {request.POST.get('category')} is already exist",
+            },
                 status=403)
 
     context = {
@@ -192,23 +202,19 @@ def add_new_language(request):
                 )
 
                 if new_subcategory is None:
-                    return JsonResponse(
-                        {
-                            'error': f'Subcategory {new_subcategory} is already exist',
-                        },
+                    return JsonResponse({
+                        'error': f'Subcategory {new_subcategory} is already exist',
+                    },
                         status=403
                     )
 
-            return JsonResponse(
-                {
-                    'new_category_id': str(new_language.id)
-                },
+            return JsonResponse({
+                'new_category_id': str(new_language.id)},
                 status=200)
         else:
-            return JsonResponse(
-                {
-                    'error': f"Category {request.POST.get('category')} is already exist",
-                },
+            return JsonResponse({
+                'error': f"Category {request.POST.get('category')} is already exist",
+            },
                 status=403)
 
     context = {
@@ -246,20 +252,32 @@ def edit_word(request, category_id, word_id):
             description=data.get('description'),
         )
 
-        # TODO: algorithm for update sentences
         Example.objects.filter(word=word).delete()
 
-        # TODO: valid data in sentences
-        for example in data.getlist('sentences[]')[:-1]:
-            sentence = Example.create(
-                word=word,
-                sentence=example
-            )
+        if word is not None:
+            for example in data.getlist('sentences[]'):
+                sentence = Example.create(
+                    word=word,
+                    sentence=example
+                )
 
-            if sentence is None:
-                return JsonResponse  # TODO sentence is already exist
+                if sentence is None:
+                    return JsonResponse({
+                        'error': f'Example {example} is already exist',
+                    },
+                        status=403
+                    )
 
-        return HttpResponse()
+            return JsonResponse({
+                'new_category_id': str(word.category.id),
+                'new_word_id': str(word.id)
+            },
+                status=200)
+        else:
+            return JsonResponse({
+                'error': f"Word {request.POST.get('word')} is already exist",
+            },
+                status=403)
 
     word = get_object_or_404(Word, id=word_id)
 
