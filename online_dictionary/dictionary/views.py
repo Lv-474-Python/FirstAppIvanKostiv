@@ -4,7 +4,7 @@ from django.http import QueryDict, HttpResponse, JsonResponse
 from .models import Category, Word, Example
 
 
-@login_required(login_url='/sign_in/')
+@login_required()
 def main_page(request):
     context = {
         'user': request.user,
@@ -23,7 +23,7 @@ def main_page(request):
     )
 
 
-@login_required(login_url='/sign_in/')
+@login_required()
 def category_view(request, category_id):
     if request.method == "DELETE":
         category = Category.objects.get(id=category_id)
@@ -53,7 +53,7 @@ def category_view(request, category_id):
     )
 
 
-@login_required(login_url='/sign_in/')
+@login_required()
 def word_view(request, category_id, word_id):
     if request.method == 'DELETE':
         word = get_object_or_404(Word, id=word_id)
@@ -78,7 +78,7 @@ def word_view(request, category_id, word_id):
     )
 
 
-@login_required(login_url='/sign_in/')
+@login_required()
 def add_new_word(request, category_id):
     if request.method == "POST":
         category = get_object_or_404(Category, id=category_id)
@@ -117,7 +117,7 @@ def add_new_word(request, category_id):
     )
 
 
-@login_required(login_url='/sign_in/')
+@login_required()
 def add_new_category(request, category_id):
     if request.method == "POST":
         parent_category = get_object_or_404(Category, id=category_id)
@@ -173,7 +173,7 @@ def add_new_category(request, category_id):
     )
 
 
-@login_required(login_url='/sign_in/')
+@login_required()
 def add_new_language(request):
     if request.method == "POST":
 
@@ -212,7 +212,7 @@ def add_new_language(request):
     )
 
 
-@login_required(login_url='/sign_in/')
+@login_required()
 def delete_example(request):
     if request.method == "DELETE":
         body_sentence = QueryDict(request.body)
@@ -222,22 +222,18 @@ def delete_example(request):
     return HttpResponse()
 
 
-@login_required(login_url='/sign_in/')
+@login_required()
 def edit_word(request, category_id, word_id):
     if request.method == "PUT":
-        # TODO add update method to the Word model
         word = get_object_or_404(Word, id=word_id)
-
         data = QueryDict(request.body)
 
-        word.name = data.get('word')
-        word.description = data.get('description')
+        word.update(name=data.get('word'), description=data.get('description'))
 
-        # TODO Integrity error
-        word.save()
-
+        # TODO: algorithm for update sentences
         Example.objects.filter(word=word).delete()
 
+        # TODO: valid data in sentences
         for example in data.getlist('sentences[]')[:-1]:
             sentence = Example.create(
                 word=word,

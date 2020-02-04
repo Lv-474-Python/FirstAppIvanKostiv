@@ -2,10 +2,6 @@ from django.db import models, IntegrityError
 from django.contrib.auth.models import User
 
 
-# TODO create save method
-# TODO create update method
-# TODO create delete method
-
 class Category(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=50)
@@ -58,6 +54,22 @@ class Word(models.Model):
 
     def __str__(self):
         return self.name
+
+    def update(self, name=None, description=None, category=None):
+        if name is not None:
+            self.name = name
+
+        if description is not None:
+            self.description = description
+
+        if category is not None:
+            self.category = None
+
+        try:
+            self.save()
+            return self
+        except IntegrityError:
+            return None
 
 
 class Example(models.Model):
