@@ -15,63 +15,108 @@ function deleteSentence(sentence_id) {
             stack: 2,
         })
     } else {
-        $.ajax({
-            type: 'DELETE',
-            url: `/main_page/delete_sentence/`,
-            data: {
-                sentence_id: sentence_id
-            },
+        $.confirm({
+            title: "<span style='color:#4B4B4B;'>Online dictionary</span>>",
+            content: "<span style='color:#4B4B4B;'>You really want to delete this sentence?</span>",
+            buttons: {
+                yes: {
+                    text: "Yes",
+                    btnClass: 'btn-red',
+                    action: () => {
+                        $.ajax({
+                            type: 'DELETE',
+                            url: `/main_page/delete_sentence/`,
+                            data: {
+                                sentence_id: sentence_id
+                            },
 
-            beforeSend: function (xhr) {
-                xhr.setRequestHeader("X-CSRFToken", `${csrf_token}`);
-            },
-            success: function () {
-                $(`#${sentence_id}`).remove();
-            },
-            error: function (errors) {
-                console.log(errors);
-                alert("Error:" + errors.responseText)
+                            beforeSend: function (xhr) {
+                                xhr.setRequestHeader("X-CSRFToken", `${csrf_token}`);
+                            },
+                            success: function () {
+                                $(`#${sentence_id}`).remove();
+                            },
+                            error: function (errors) {
+                                console.log(errors);
+                                alert("Error:" + errors.responseText)
+                            }
+                        });
+                    }
+                },
+                no: function () {
+                }
             }
-        });
+        })
     }
 }
 
 function deleteWord(categoryId, wordId) {
     let csrf_token = document.getElementsByName("csrfmiddlewaretoken")[0].value;
-    $.ajax({
-        type: 'DELETE',
-        url: `/main_page/${categoryId}/${wordId}/`,
 
-        beforeSend: function (xhr) {
-            xhr.setRequestHeader("X-CSRFToken", `${csrf_token}`);
-        },
-        success: function () {
-            document.location.replace(`/main_page/${categoryId}/`)
-        },
-        error: function () {
-            alert("Not cool")
+    $.confirm({
+        title: "<span style='color:#4B4B4B;'>Online dictionary</span>>",
+        content: "<span style='color:#4B4B4B;'>You really want to delete this word?</span>",
+        buttons: {
+            yes: {
+                text: "Yes",
+                btnClass: 'btn-red',
+                action: () => {
+                    $.ajax({
+                        type: 'DELETE',
+                        url: `/main_page/${categoryId}/${wordId}/`,
+
+                        beforeSend: function (xhr) {
+                            xhr.setRequestHeader("X-CSRFToken", `${csrf_token}`);
+                        },
+                        success: function () {
+                            document.location.replace(`/main_page/${categoryId}/`)
+                        },
+                        error: function () {
+                            alert("Not cool")
+                        }
+                    });
+                }
+            },
+            no: function () {
+            }
         }
-    });
+    })
+
 }
 
 function deleteCategory(categoryId) {
     let csrf_token = document.getElementsByName("csrfmiddlewaretoken")[0].value;
-    $.ajax({
-        type: 'DELETE',
-        url: `/main_page/${categoryId}/`,
 
-        beforeSend: function (xhr) {
-            xhr.setRequestHeader("X-CSRFToken", `${csrf_token}`);
-        },
-        success: function (data) {
-            if (data.parent_id != null) {
-                document.location.replace(`/main_page/${data.parent_id}/`)
-            } else {
-                document.location.replace(`/main_page/`)
+    $.confirm({
+        title: "<span style='color:#4B4B4B;'>Online dictionary</span>>",
+        content: "<span style='color:#4B4B4B;'>You really want to delete this category?</span>",
+        buttons: {
+            yes: {
+                text: "Yes",
+                btnClass: 'btn-red',
+                action: () => {
+                    $.ajax({
+                        type: 'DELETE',
+                        url: `/main_page/${categoryId}/`,
+
+                        beforeSend: function (xhr) {
+                            xhr.setRequestHeader("X-CSRFToken", `${csrf_token}`);
+                        },
+                        success: function (data) {
+                            if (data.parent_id != null) {
+                                document.location.replace(`/main_page/${data.parent_id}/`)
+                            } else {
+                                document.location.replace(`/main_page/`)
+                            }
+                        },
+                        error: function () {
+                            alert("Not cool")
+                        }
+                    });
+                }
+            },
+            no: function () {
             }
-        },
-        error: function () {
-            alert("Not cool")
         }
     });
 }
