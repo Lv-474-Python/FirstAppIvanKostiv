@@ -2,17 +2,7 @@ function addNewCategory() {
     let csrf_token = document.getElementsByName("csrfmiddlewaretoken")[0].value;
 
     let category = document.getElementsByName('category')[0].value;
-    let subcategories = [];
-    document.getElementsByName('subcategories')
-        .forEach((item, index, object) => {
-            subcategories.push(item.value)
-        });
-
-    subcategories.forEach((item, index, object) => {
-        if (item === "") {
-            object.splice(index, 1)
-        }
-    });
+    let subcategories = clearListByName("subcategories");
 
     let validator = validateSubcategorySequence(category, subcategories);
 
@@ -58,4 +48,20 @@ function addNewCategory() {
             stack: 3,
         });
     }
+}
+
+function clearListByName(name) {
+    let array = [];
+    document.getElementsByName(name)
+        .forEach((item) => {
+            array.push(item.value)
+        });
+
+    array.forEach((item, index, object) => {
+        if (item === "") {
+            object.splice(index, 1)
+        }
+    });
+
+    return array
 }

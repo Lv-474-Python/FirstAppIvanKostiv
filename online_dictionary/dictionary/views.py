@@ -184,7 +184,7 @@ def add_new_language(request):
         )
 
         if new_language is not None:
-            for subcategory in request.POST.getlist('subcategories')[:-1]:
+            for subcategory in request.POST.getlist('subcategories[]'):
                 new_subcategory = Category.create(
                     user=request.user,
                     name=subcategory,
@@ -192,11 +192,24 @@ def add_new_language(request):
                 )
 
                 if new_subcategory is None:
-                    return JsonResponse  # TODO subcategory is already exist
-        else:
-            return JsonResponse  # TODO language is already exist
+                    return JsonResponse(
+                        {
+                            'error': f'Subcategory {new_subcategory} is already exist',
+                        },
+                        status=403
+                    )
 
-        return redirect('category_view', new_language.id)
+            return JsonResponse(
+                {
+                    'new_category_id': str(new_language.id)
+                },
+                status=200)
+        else:
+            return JsonResponse(
+                {
+                    'error': f"Category {request.POST.get('category')} is already exist",
+                },
+                status=403)
 
     context = {
         'categories': Category.objects.filter(
@@ -228,7 +241,10 @@ def edit_word(request, category_id, word_id):
         word = get_object_or_404(Word, id=word_id)
         data = QueryDict(request.body)
 
-        word.update(name=data.get('word'), description=data.get('description'))
+        word.update(
+            name=data.get('word'),
+            description=data.get('description'),
+        )
 
         # TODO: algorithm for update sentences
         Example.objects.filter(word=word).delete()

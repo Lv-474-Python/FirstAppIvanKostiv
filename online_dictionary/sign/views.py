@@ -6,7 +6,7 @@ from . import forms
 
 def sign_up(request):
     if request.user.is_authenticated:
-        return redirect("main_page/")
+        return redirect("/main_page/")
 
     form = forms.SignUpForm()
     if request.method == "POST":

@@ -12,58 +12,54 @@
 {% block white_workspace %}
     <div class="row h-100">
         <div class="col-md-10">
-{#            <form class="w-100"#}
-{#                    {% if category %}#}
-{#                  action="{% url 'new_category' category %}"#}
-{#                    {% else %}#}
-{#                  action="{% url 'new_language' %}"#}
-{#                    {% endif %}#}
-{#                  id="add_category_form">#}
-                {% csrf_token %}
-                <div id="category-form-inputs">
+            {% csrf_token %}
+            <div id="category-form-inputs">
 
-                    {% if category %}
-                        <div class="row ml-0 mt-4 word-label">
-                            <h5>category?</h5>
-                        </div>
-
-                        <div class="row ml-3">
-                            <input class="form-control w-100 word-input word-title p-2" type="text"
-                                   placeholder="Enter your category..."
-                                   name="category">
-                        </div>
-                    {% else %}
-                        <div class="row ml-0 mt-4 word-label">
-                            <h5>languages?</h5>
-                        </div>
-
-                        <div class="row ml-3">
-                            <input class="form-control w-100 word-input word-title p-2" type="text"
-                                   placeholder="Enter your languages..."
-                                   name="category">
-                        </div>
-                    {% endif %}
-
+                {% if category %}
                     <div class="row ml-0 mt-4 word-label">
-                        <h5>some subcategory?</h5>
+                        <h5>category?</h5>
                     </div>
 
                     <div class="row ml-3">
-                        <input class="form-control w-100 word-input p-2 subcategory_input"
-                               type="text"
-                               placeholder="Enter subcategory..."
-                               onblur="addNewSubcategoryInput(this)"
-                               id="last_subcategory"
-                               name="subcategories">
+                        <input class="form-control w-100 word-input word-title p-2" type="text"
+                               placeholder="Enter your category..."
+                               name="category">
+                    </div>
+                {% else %}
+                    <div class="row ml-0 mt-4 word-label">
+                        <h5>languages?</h5>
                     </div>
 
+                    <div class="row ml-3">
+                        <input class="form-control w-100 word-input word-title p-2" type="text"
+                               placeholder="Enter your languages..."
+                               name="category">
+                    </div>
+                {% endif %}
+
+                <div class="row ml-0 mt-4 word-label">
+                    <h5>some subcategory?</h5>
                 </div>
 
-                <div class="row">
-                    <button type="button" onclick="addNewCategory()" class="btn workspace-button mx-auto my-4 px-5">Save</button>
+                <div class="row ml-3">
+                    <input class="form-control w-100 word-input p-2 subcategory_input"
+                           type="text"
+                           placeholder="Enter subcategory..."
+                           onblur="addNewSubcategoryInput(this)"
+                           id="last_subcategory"
+                           name="subcategories">
                 </div>
 
-{#            </form>#}
+            </div>
+
+            <div class="row">
+                <button type="button"
+                        onclick="addNewCategory()"
+                        class="btn workspace-button mx-auto my-4 px-5">
+                    Save
+                </button>
+            </div>
+
         </div>
     </div>
 {% endblock %}
