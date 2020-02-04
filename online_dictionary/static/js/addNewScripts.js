@@ -1,18 +1,18 @@
 function addNewCategory() {
     let csrf_token = document.getElementsByName("csrfmiddlewaretoken")[0].value;
 
-    let category = document.getElementsByName('category')[0].value;
-    let subcategories = clearListByName("subcategories");
+    let category = document.getElementsByName('category')[0];
+    let subcategories = document.getElementsByName('subcategories');
 
-    let validator = validateSubcategorySequence(category, subcategories);
+    let validator = validateAddNewCategory(category, subcategories);
 
     if (validator.isValid) {
         $.ajax({
             type: "POST",
             url: document.location.href,
             data: {
-                category: category,
-                subcategories: subcategories,
+                category: category.value,
+                subcategories: clearList(subcategories),
             },
 
             beforeSend: function (xhr) {
@@ -22,6 +22,7 @@ function addNewCategory() {
                 document.location.replace(`/main_page/${response.new_category_id}/`)
             },
             error: function (error_message) {
+                console.log(error_message)
                 let error = JSON.parse(error_message.responseText);
 
                 $.toast({
@@ -29,7 +30,7 @@ function addNewCategory() {
                     text: error.error,
                     showHideTransition: 'slide',
                     icon: 'error',
-                    hideAfter: 5000,
+                    hideAfter: 10000,
                     position: 'bottom-right',
                     loader: false,
                     stack: 3,
@@ -37,25 +38,27 @@ function addNewCategory() {
             }
         })
     } else {
-        $.toast({
-            heading: "Error!",
-            text: validator.error_message,
-            showHideTransition: 'slide',
-            icon: 'error',
-            hideAfter: 5000,
-            position: 'bottom-right',
-            loader: false,
-            stack: 3,
-        });
+
+        for (let i = 0; i < validator.error_messages.length; ++i) {
+            $.toast({
+                heading: "Error!",
+                text: validator.error_messages[i],
+                showHideTransition: 'slide',
+                icon: 'error',
+                hideAfter: 10000,
+                position: 'bottom-right',
+                loader: false,
+                stack: 3,
+            });
+        }
     }
 }
 
-function clearListByName(name) {
+function clearList(list) {
     let array = [];
-    document.getElementsByName(name)
-        .forEach((item) => {
-            array.push(item.value)
-        });
+    list.forEach((item) => {
+        array.push(item.value)
+    });
 
     array.forEach((item, index, object) => {
         if (item === "") {

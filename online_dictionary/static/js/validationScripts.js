@@ -15,37 +15,97 @@ Array.prototype.unique = function () {
     return arr;
 };
 
-function validateSubcategorySequence(categoryName, subcategoryList) {
-    let uniqueSubcategory = subcategoryList.unique();
+function validateAddNewCategory(categoryName, subcategoryList) {
+    let validator = {isValid: false, error_messages: []};
+    let clearSubcategoryList = clearList(subcategoryList);
+    let uniqueSubcategory = clearSubcategoryList.unique();
 
-    if (subcategoryList.contains(categoryName))
-        return {
-            isValid: false,
-            error_message: "The name of the main category and sub-category match"
-        };
+    for (let i = 0; i < subcategoryList.length - 1; ++i) {
+        if (categoryName.value === subcategoryList[i].value) {
 
-    if (uniqueSubcategory.length !== subcategoryList.length)
-        return {
-            isValid: false,
-            error_message: "You can't added similar subcategory",
-        };
+            $(categoryName).addClass("red-border");
+            $(subcategoryList[i]).addClass("red-border");
 
-    if (!validateMinLength(categoryName, 3)) {
-        return {
-            isValid: false,
-            error_message: "Category must contain at least 3 character"
+            validator.isValid = false;
+            if (!validator.error_messages.contains("You can't added similar subcategory"))
+                validator.error_messages.push(
+                    "You can't added similar subcategory"
+                )
+        } else {
+            $(categoryName).removeClass("red-border");
+            $(subcategoryList[i]).removeClass("red-border");
+            validator.isValid = true;
+        }
+
+        if (!validateMinLength(subcategoryList[i].value, 3)) {
+            $(subcategoryList[i]).addClass('red-border');
+
+            validator.isValid = false;
+            if (!validator.error_messages.contains("Category must contain at least 3 character"))
+                validator.error_messages.push(
+                    "Category must contain at least 3 character"
+                );
+        } else {
+            $(categoryName).removeClass("red-border");
+            $(subcategoryList[i]).removeClass("red-border");
+
+            validator.isValid = true;
         }
     }
 
-    for (let i = 0; i < uniqueSubcategory.length; ++i) {
-        if (!validateMinLength(uniqueSubcategory[i], 3))
-            return {
-                isValid: false,
-                error_message: "Category must contain at least 3 character"
-            }
+    if (!validateMinLength(categoryName.value, 3)) {
+        $(categoryName).addClass("red-border");
+
+        validator.isValid = false;
+        if (!validator.error_messages.contains("Category must contain at least 3 character"))
+            validator.error_messages.push(
+                "Category must contain at least 3 character"
+            );
+    } else {
+        $(categoryName).removeClass("red-border");
+        validator.isValid = true;
     }
 
-    return {isValid: true}
+
+    // validate unique subcategory
+    if (uniqueSubcategory.length !== clearSubcategoryList.length) {
+        validator.isValid = false;
+
+        let notUnique = [];
+
+        for (let i = 0; i < clearSubcategoryList.length;) {
+            let element = clearSubcategoryList.shift();
+
+            for (let j = 0; j < clearSubcategoryList.length; ++j) {
+                if (clearSubcategoryList[j] === element) {
+                    if (!notUnique.contains(element)) {
+                        notUnique.push(element);
+                    }
+                    clearSubcategoryList.splice(j, 1)
+                    break;
+                }
+            }
+        }
+
+        for (let i = 0; i < subcategoryList.length - 1; ++i) {
+            if (notUnique.contains(subcategoryList[i].value)) {
+                $(subcategoryList[i]).addClass('red-border')
+            } else {
+                $(subcategoryList[i]).removeClass('red-border')
+            }
+        }
+
+        if (!validator.error_messages.contains("You can't added similar subcategory"))
+            validator.error_messages.push(
+                "You can't added similar subcategory"
+            );
+
+    } else {
+        validator.isValid = true;
+    }
+
+
+    return validator
 }
 
 function validateMinLength(value, minLength) {

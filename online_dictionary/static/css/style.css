@@ -132,3 +132,11 @@ textarea {
     color: white;
     background-color: #0F52BA;
 }
+
+.red-border {
+    border-color: red;
+}
+
+.green-border {
+    border-color: green;
+}
