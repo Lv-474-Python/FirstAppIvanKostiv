@@ -1,4 +1,4 @@
-{% extends "bootstrap.html" %}
+{% extends "base.html" %}
 
 {% load static %}
 
@@ -33,10 +33,12 @@
                                     <div class="error">{{ form.password.errors.as_text }}</div>
                                 </div>
                                 <div class="row">
-                                    <input class="btn btn-light default-button mt-4 mx-auto px-5 py-0" type="submit"
+                                    <input class="btn btn-light default-button mt-4 mx-auto px-5 py-0"
+                                           type="submit"
                                            value="Sign In">
                                 </div>
                             </form>
+                            {# FORM FOR SIGN IN #}
                         </div>
                     </div>
                 </div>

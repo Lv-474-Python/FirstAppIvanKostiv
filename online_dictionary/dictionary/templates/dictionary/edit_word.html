@@ -11,9 +11,12 @@
 
 {% block white_workspace %}
     <div class="row h-100">
-        <div class="col-md-11">
+        {# SECTION FOR INPUTS TO EDIT WORD #}
+        <div class="col-md-10">
             {% csrf_token %}
             <div id="word-form-inputs" class="w-100">
+
+                {# SECTION FOR WORD NAME INPUTS #}
                 <div class="row ml-0 mt-4 word-label">
                     <h5>what?</h5>
                 </div>
@@ -25,11 +28,12 @@
                                value="{{ word }}">
                     </div>
                 </div>
+                {# END SECTION FOR WORD NAME INPUTS #}
 
+                {# SECTION FOR DESCRIPTION WORD INPUTS #}
                 <div class="row ml-0 mt-4 word-label">
                     <h5>what is it?</h5>
                 </div>
-
                 <div class="row ml-3">
                     <div class="col-md-11 gray-background m-0 p-0">
                          <textarea class="form-control w-100 word-input p-2"
@@ -38,11 +42,14 @@
                                    name="description">{{ word.description }}</textarea>
                     </div>
                 </div>
+                {# END SECTION FOR DESCRIPTION WORD INPUTS #}
 
+                {# SECTION FOR WORD SENTENCES INPUTS #}
                 <div class="row ml-0 mt-4 word-label">
                     <h5>examples?</h5>
                 </div>
 
+                {# RENDER ALL SENTENCES THAT ALREADY EXIST #}
                 {% for sentence in word.sentences.all %}
                     <div class="row mt-1 ml-3" id="{{ sentence.id }}">
                         <div class="col-md-11 p-0 m-0 sentence-wrapper gray-background">
@@ -56,6 +63,7 @@
                     </div>
                 {% endfor %}
 
+                {# INPUT FOR NEW SENTENCE #}
                 <div class="row mt-1 ml-3">
                     <div class="col-md-11 p-0 m-0 sentence-wrapper gray-background">
                         <input class="form-control w-100 word-input p-2 sentence_input"
@@ -66,14 +74,21 @@
                                name="sentences">
                     </div>
                 </div>
+                {# END INPUT FOR NEW SENTENCE #}
+
+                {# SECTION FOR WORD SENTENCES INPUTS #}
 
             </div>
 
+            {# SAVE BUTTON #}
             <div class="row">
-                <button type="button" onclick="saveEditWord({{ category.id }}, {{ word.id }})"
+                <button type="button"
+                        onclick="saveEditWord({{ category.id }}, {{ word.id }})"
                         class="btn workspace-button mx-auto my-4 px-5">Save
                 </button>
             </div>
+            {# END SAVE BUTTON #}
         </div>
+        {# END SECTION FOR INPUTS TO EDIT WORD #}
     </div>
 {% endblock %}

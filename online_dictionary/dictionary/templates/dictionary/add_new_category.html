@@ -11,11 +11,14 @@
 
 {% block white_workspace %}
     <div class="row h-100">
+        {# FORM FOR ADD CATEGORY #}
         <div class="col-md-10">
             {% csrf_token %}
             <div id="category-form-inputs">
 
+
                 {% if category %}
+                    {# IF THIS PAGE 'add_category', then render this #}
                     <div class="row ml-0 mt-4 word-label">
                         <h5>category?</h5>
                     </div>
@@ -26,7 +29,9 @@
                                name="category"
                                maxlength="50">
                     </div>
+                    {# END 'add_category' #}
                 {% else %}
+                    {# IF THIS PAGE 'add_language', then render this #}
                     <div class="row ml-0 mt-4 word-label">
                         <h5>languages?</h5>
                     </div>
@@ -37,12 +42,14 @@
                                name="category"
                                maxlength="50">
                     </div>
+                    {# END 'add_language' #}
                 {% endif %}
 
+                {# SUBCATEGORY INPUTS #}
                 <div class="row ml-0 mt-4 word-label">
                     <h5>some subcategory?</h5>
                 </div>
-
+                {# INPUT FOR SUBCATEGORY #}
                 <div class="row ml-3">
                     <input class="form-control w-100 word-input p-2 subcategory_input"
                            type="text"
@@ -52,17 +59,21 @@
                            name="subcategories"
                            maxlength="50">
                 </div>
+                {# END INPUT FOR SUBCATEGORY #}
 
+                {# END SUBCATEGORY INPUTS #}
             </div>
 
+            {# SAVE CATEGORY BUTTON #}
             <div class="row">
                 <button type="button"
                         onclick="addNewCategory()"
-                        class="btn workspace-button mx-auto my-4 px-5">
-                    Save
+                        class="btn workspace-button mx-auto my-4 px-5">Save
                 </button>
             </div>
 
+            {# END SAVE CATEGORY BUTTON #}
         </div>
+        {# END FORM FOR ADD CATEGORY #}
     </div>
 {% endblock %}

@@ -10,7 +10,7 @@ function saveEditWord(categoryId, wordId) {
     if (validator.isValid) {
         $.ajax({
             type: 'PUT',
-            url: `/main_page/${categoryId}/${wordId}/edit_word/`,
+            url: `/main_page/category/${categoryId}/word/${wordId}/edit_word/`,
             data: {
                 word: word.value,
                 description: description.value,
@@ -23,7 +23,7 @@ function saveEditWord(categoryId, wordId) {
                 let category = response.new_category_id;
                 let word = response.new_word_id;
 
-                document.location.replace(`/main_page/${category}/${word}`)
+                document.location.replace(`/main_page/category/${category}/word/${word}`)
             },
             error: function (error_message) {
                 let error = JSON.parse(error_message.responseText);

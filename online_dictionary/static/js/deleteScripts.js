@@ -4,16 +4,7 @@ function deleteSentence(sentence_id) {
     if (document.getElementsByName('sentences').length === 1) {
         $(`#${sentence_id}`).children(".icon").css('display', 'none');
 
-        $.toast({
-            heading: "Can't delete!",
-            text: 'You cannot delete the last sentence',
-            showHideTransition: 'slide',
-            icon: 'error',
-            hideAfter: 5000,
-            position: 'bottom-right',
-            loader: false,
-            stack: 2,
-        })
+        makeToast("You cannot delete the last sentence");
     } else {
         $.confirm({
             title: "<span style='color:#4B4B4B;'>Online dictionary</span>>",
@@ -37,7 +28,6 @@ function deleteSentence(sentence_id) {
                                 $(`#${sentence_id}`).remove();
                             },
                             error: function (errors) {
-                                console.log(errors);
                                 alert("Error:" + errors.responseText)
                             }
                         });
@@ -63,13 +53,13 @@ function deleteWord(categoryId, wordId) {
                 action: () => {
                     $.ajax({
                         type: 'DELETE',
-                        url: `/main_page/${categoryId}/${wordId}/`,
+                        url: `/main_page/category/${categoryId}/word/${wordId}/`,
 
                         beforeSend: function (xhr) {
                             xhr.setRequestHeader("X-CSRFToken", `${csrf_token}`);
                         },
                         success: function () {
-                            document.location.replace(`/main_page/${categoryId}/`)
+                            document.location.replace(`/main_page/category/${categoryId}/`)
                         },
                         error: function () {
                             alert("Not cool")
@@ -97,14 +87,14 @@ function deleteCategory(categoryId) {
                 action: () => {
                     $.ajax({
                         type: 'DELETE',
-                        url: `/main_page/${categoryId}/`,
+                        url: `/main_page/category/${categoryId}/`,
 
                         beforeSend: function (xhr) {
                             xhr.setRequestHeader("X-CSRFToken", `${csrf_token}`);
                         },
                         success: function (data) {
                             if (data.parent_id != null) {
-                                document.location.replace(`/main_page/${data.parent_id}/`)
+                                document.location.replace(`/main_page/category/${data.parent_id}/`)
                             } else {
                                 document.location.replace(`/main_page/`)
                             }

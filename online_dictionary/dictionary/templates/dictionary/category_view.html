@@ -10,12 +10,16 @@
 {% block white_workspace %}
     <div class="row">
         <div class="col-md-11">
+            {# CATEGORY NAME SECTION #}
             <div class="row">
                 <h2 class="mt-3 ml-4 mb-1">{{ category }}</h2>
             </div>
             <div class="row">
                 <hr class="ml-4 w-75">
             </div>
+            {# END CATEGORY NAME SECTION #}
+
+            {# SECTION FOR WORDS IN CATEGORY #}
             <div class="row">
                 <h4 class="mt-3 ml-4 mb-0">Words:</h4>
             </div>
@@ -24,7 +28,9 @@
                 <hr class="w-50">
             </div>
 
+
             {% if category.words.all %}
+                {# IF CATEGORY CONTAINS ONE OR MORE WORDS THEN RENDER THIS #}
                 {% for word in category.words.all %}
                     <div class="row ml-3">
                         <a class="word ml-3" href="{% url 'word_view' category.id word.id %}">
@@ -33,17 +39,23 @@
                     </div>
                 {% endfor %}
             {% else %}
+                {# IF CATEGORY CONTAINS NO ONE WORD THEN RENDER THIS #}
                 <div class="row mt-3">
                     <h5 class="mx-auto">No words :(</h5>
                 </div>
             {% endif %}
 
+            {# LINK FOR ADD NEW WORD #}
             <div class="row mt-0">
                 <a class="mx-auto add-link" href="{% url 'new_word' category.id %}">
                     <h5>Add new word</h5>
                 </a>
             </div>
+            {# END LINK FOR ADD NEW WORD #}
 
+            {# SECTION FOR WORDS IN CATEGORY #}
+
+            {# SECTION FOR SUBCATEGORY IN THIS CATEGORY #}
             <div class="row mt-3">
                 <h4 class="mt-1 ml-4 mb-0">Categories:</h4>
             </div>
@@ -53,6 +65,7 @@
             </div>
 
             {% if category.categories.all %}
+                {# IF CATEGORY CONTAINS ONE OR MORE SUBCATEGORIES THEN RENDER THIS #}
                 {% for children in category.categories.all %}
                     <div class="row ml-3">
                         <a class="category ml-3" href="{% url 'category_view' children.id %}">
@@ -61,29 +74,42 @@
                     </div>
                 {% endfor %}
             {% else %}
+                {# IF CATEGORY CONTAINS NO ONE SUBCATEGORIES THEN RENDER THIS #}
                 <div class="row mt-3">
                     <h5 class="mx-auto">No categories :(</h5>
                 </div>
             {% endif %}
 
+            {# LINK FOR ADD NEW SUBCATEGORY #}
             <div class="row mt-0">
                 <a class="mx-auto add-link" href="{% url 'new_category' category.id %}">
                     <h5>Add new category</h5>
                 </a>
             </div>
+            {# END LINK FOR ADD NEW SUBCATEGORY #}
         </div>
+        {# END SECTION FOR SUBCATEGORY #}
 
+        {# SIDE MENU #}
         <div class="col-md-1">
             {% csrf_token %}
+            {# DELETE CATEGORY ICON #}
             <div class="row mt-4">
                 <div class="mx-auto">
-                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"
+                    <svg width="32"
+                         height="32"
+                         viewBox="0 0 32 32"
+                         fill="none"
+                         xmlns="http://www.w3.org/2000/svg"
                          onclick="deleteCategory({{ category.id }})">
+
                         <path d="M11.25 5.75H11C11.1375 5.75 11.25 5.6375 11.25 5.5V5.75H20.75V5.5C20.75 5.6375 20.8625 5.75 21 5.75H20.75V8H23V5.5C23 4.39688 22.1031 3.5 21 3.5H11C9.89687 3.5 9 4.39688 9 5.5V8H11.25V5.75ZM27 8H5C4.44687 8 4 8.44688 4 9V10C4 10.1375 4.1125 10.25 4.25 10.25H6.1375L6.90938 26.5938C6.95938 27.6594 7.84063 28.5 8.90625 28.5H23.0938C24.1625 28.5 25.0406 27.6625 25.0906 26.5938L25.8625 10.25H27.75C27.8875 10.25 28 10.1375 28 10V9C28 8.44688 27.5531 8 27 8ZM22.8531 26.25H9.14688L8.39062 10.25H23.6094L22.8531 26.25Z"
                               fill="#0F52BA"></path>
                     </svg>
                 </div>
             </div>
+            {# DELETE CATEGORY ICON #}
         </div>
+        {# SIDE MENU #}
     </div>
 {% endblock %}

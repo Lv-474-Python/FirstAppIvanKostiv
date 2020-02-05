@@ -1,5 +1,7 @@
+{# THIS IS TEMPLATE FOR RECURSIVE MENU RENDER #}
 {% for category in categories %}
     <li class="ml-3 category-item">
+        {# SVG FOR MENU COLLAPSE | EXPAND #}
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"
              data-toggle="collapse"
              data-target="#{{ category.id }}"
@@ -11,16 +13,18 @@
              visibility="visible"
                 {% else %}
              visibility="hidden"
-                {% endif %}
-        >
+                {% endif %}>
             <path transform="scale(1)" d="M13 8L5.5 12.3301V3.66987L13 8Z" fill="white"></path>
         </svg>
+        {# END SVG FOR MENU COLLAPSE | EXPAND #}
 
-
+        {# LINK TO CATEGORY VIEW #}
         <a href="{% url 'category_view' category.id %}">
             {{ category }}
         </a>
+        {# END LINK TO CATEGORY VIEW #}
 
+        {# FOR ALL SUBCATEGORY RENDER THIS MENU#}
         <ul class="collapse" id="{{ category.id }}">
             {% if category.categories.all %}
                 {% with categories=category.categories.all %}
@@ -28,6 +32,6 @@
                 {% endwith %}
             {% endif %}
         </ul>
-
+        {# END FOR #}
     </li>
 {% endfor %}

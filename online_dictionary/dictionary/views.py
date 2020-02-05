@@ -95,7 +95,6 @@ def add_new_word(request, category_id):
                     sentence=sentence,
                     word=new_word,
                 )
-
                 if new_example is None:
                     return JsonResponse({
                         'error': f'Example {new_example} is already exist',

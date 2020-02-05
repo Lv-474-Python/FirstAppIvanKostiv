@@ -19,11 +19,11 @@ function addNewCategory() {
                 xhr.setRequestHeader("X-CSRFToken", `${csrf_token}`);
             },
             success: function (response) {
-                document.location.replace(`/main_page/${response.new_category_id}/`)
+                let category = response.new_category_id;
+                document.location.replace(`/main_page/category/${category}/`)
             },
             error: function (error_message) {
                 let error = JSON.parse(error_message.responseText);
-
                 makeToast(error.error);
             }
         })
@@ -50,7 +50,7 @@ function addNewWord() {
             data: {
                 word: word.value,
                 description: description.value,
-                examples: clearList(examples),
+                sentences: clearList(examples),
             },
 
             beforeSend: function (xhr) {
@@ -60,17 +60,14 @@ function addNewWord() {
                 let category = response.new_category_id;
                 let word = response.new_word_id;
 
-                document.location.replace(`/main_page/${category}/${word}`)
+                document.location.replace(`/main_page/category/${category}/word/${word}/`)
             },
             error: function (error_message) {
-                console.log(error_message);
                 let error = JSON.parse(error_message.responseText);
-
                 makeToast(error.error);
             }
         })
     } else {
-
         for (let i = 0; i < validator.error_messages.length; ++i) {
             makeToast(validator.error_messages[i])
         }
