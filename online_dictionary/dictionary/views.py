@@ -6,6 +6,11 @@ from .models import Category, Word, Example
 
 @login_required()
 def main_page(request):
+    """
+    View for main page
+    :param request:
+    :return:
+    """
     context = {
         'user': request.user,
         'categories': Category.objects.filter(
@@ -25,6 +30,12 @@ def main_page(request):
 
 @login_required()
 def category_view(request, category_id):
+    """
+    View for category page
+    If method DELETE then delete this category with id=category_id
+    :param request:
+    :param category_id: category id to delete or get
+    """
     if request.method == "DELETE":
         category = Category.objects.get(id=category_id)
         if category.category is not None:
@@ -42,7 +53,6 @@ def category_view(request, category_id):
             user=request.user,
             category=None,
         ),
-
         'category': category
     }
 
@@ -55,10 +65,27 @@ def category_view(request, category_id):
 
 @login_required()
 def word_view(request, category_id, word_id):
+    """
+    View for word page.
+    If method DELETE then delete this word from database
+    If method PUT then update this word with examples in which:
+        name = PUT['word']
+        description = PUT['description']
+
+        examples = PUT['sentences[]']
+    If another method then render page with word view.
+
+    :param request:
+    :param category_id: category id in which word contains
+    :param word_id: word id to update, delete or get
+    """
     if request.method == 'DELETE':
-        word = get_object_or_404(Word, id=word_id)
-        word.delete()
-        return HttpResponse()
+        if Word.delete_by_id(word_id):
+            return HttpResponse()
+        else:
+            return JsonResponse({
+                'error': f'Error while deleting this word',
+            }, status=422)
 
     if request.method == "PUT":
         word = get_object_or_404(Word, id=word_id)
@@ -79,15 +106,18 @@ def word_view(request, category_id, word_id):
                 )
 
                 if sentence is None:
+                    # Sentence already exist in database
                     return JsonResponse({
                         'error': f'Example {example} is already exist',
                     }, status=422)
 
+            # Success updated word with examples
             return JsonResponse({
                 'new_category_id': str(word.category.id),
                 'new_word_id': str(word.id)
             }, status=200)
 
+        # Word already exist in database
         return JsonResponse({
             'error': f"Word {request.POST.get('word')} is already exist",
         }, status=422)
@@ -112,6 +142,20 @@ def word_view(request, category_id, word_id):
 
 @login_required()
 def add_new_word(request, category_id):
+    """
+    View for add new word.
+    If method POST then created new word with examples in which:
+        name = POST['word']
+        description = POST['description']
+        category = category_id
+
+        examples = POST['sentences[]']
+
+    If another method then return rendered add_new_word page
+
+    :param request
+    :param category_id: category in which to add new word
+    """
     if request.method == "POST":
         category = get_object_or_404(Category, id=category_id)
 
@@ -128,15 +172,18 @@ def add_new_word(request, category_id):
                     word=new_word,
                 )
                 if new_example is None:
+                    # Example already exist in database
                     return JsonResponse({
                         'error': f'Example {new_example} is already exist',
                     }, status=422)
 
+            # Success added word with examples
             return JsonResponse({
                 'new_category_id': str(new_word.category.id),
                 'new_word_id': str(new_word.id)
             }, status=200)
 
+        # Word already exist in database
         return JsonResponse({
             'error': f"Word {request.POST.get('word')} is already exist",
         }, status=422)
@@ -159,6 +206,19 @@ def add_new_word(request, category_id):
 
 @login_required()
 def add_new_category(request, category_id):
+    """
+    View for add new category.
+    If method POST, then create new category with subcategory in which:
+        user=request.user
+        name=POST['category']
+        category=category_id
+
+        subcategory = POST['subcategories[]']
+
+    If another method then return rendered page to add new category.
+    :param request:
+    :param category_id: category id to which you want to add a new category
+    """
     if request.method == "POST":
         parent_category = get_object_or_404(Category, id=category_id)
 
@@ -179,14 +239,17 @@ def add_new_category(request, category_id):
                 )
 
                 if new_subcategory is None:
+                    # Subcategory already exist in database
                     return JsonResponse({
                         'error': f'Subcategory {new_subcategory} is already exist',
                     }, status=422)
 
+            # Success added category with subcategory
             return JsonResponse({
                 'new_category_id': str(new_category.id)
             }, status=200)
 
+        # Category already exist in database
         return JsonResponse({
             'error': f"Category {request.POST.get('category')} is already exist",
         }, status=422)
@@ -208,6 +271,18 @@ def add_new_category(request, category_id):
 
 @login_required()
 def add_new_language(request):
+    """
+        View for add new language.
+        If method POST, then create new category with subcategory in which:
+            user=request.user
+            name=POST['category']
+            category=None
+
+            subcategory = POST['subcategories[]']
+
+        If another method then return rendered page to add new category.
+        :param request:
+        """
     if request.method == "POST":
 
         new_language = Category.create(
@@ -225,13 +300,16 @@ def add_new_language(request):
                 )
 
                 if new_subcategory is None:
+                    # Subcategory already exist in database
                     return JsonResponse({
                         'error': f'Subcategory {new_subcategory} is already exist',
                     }, status=422)
 
+            # Success created category with subcategory
             return JsonResponse({
                 'new_category_id': str(new_language.id)}, status=200)
 
+        # Category already exist in database
         return JsonResponse({
             'error': f"Category {request.POST.get('category')} is already exist",
         }, status=422)
@@ -252,6 +330,13 @@ def add_new_language(request):
 
 @login_required()
 def edit_word(request, category_id, word_id):
+    """
+    View for edit word page.
+    :param request:
+    :param category_id: category id in which the word is located
+    :param word_id: word in to edit
+    :return: rendered page for edit word
+    """
     word = get_object_or_404(Word, id=word_id)
 
     context = {
@@ -272,6 +357,11 @@ def edit_word(request, category_id, word_id):
 
 @login_required()
 def delete_example(request):
+    """
+    View for delete example from database.
+    If method DELETE with param 'sentence_id', then delete sentence from database
+        with id=sentence_id
+    """
     if request.method == "DELETE":
         body_sentence = QueryDict(request.body)
         if Example.delete_by_id(body_sentence.get('sentence_id')):
@@ -280,3 +370,4 @@ def delete_example(request):
             return JsonResponse({
                 'error': f'Error while deleting this sentence',
             }, status=422)
+    return HttpResponse()

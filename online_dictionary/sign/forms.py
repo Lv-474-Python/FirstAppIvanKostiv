@@ -27,6 +27,10 @@ class SignUpForm(forms.ModelForm):
         ]
 
     def clean_username(self):
+        """
+        Validate username input
+        :return: username of raise ValidationError
+        """
         try:
             username = User.objects.get(username=self.cleaned_data.get('username'))
             raise forms.ValidationError('User with login %(login)s already exist',
@@ -35,6 +39,10 @@ class SignUpForm(forms.ModelForm):
             return self.cleaned_data.get('username')
 
     def clean_confirm(self):
+        """
+        Validate confirm password input
+        :return: confirmed password or raise ValidationError
+        """
         password = self.cleaned_data.get('password')
         confirm = self.cleaned_data.get('confirm')
 
@@ -45,6 +53,11 @@ class SignUpForm(forms.ModelForm):
         return confirm
 
     def save(self, commit=True):
+        """
+        Override default method save. Save user object in database
+        :param commit:
+        :return: saved user object
+        """
         user = super(SignUpForm, self).save(commit=False)
         user.set_password(self.cleaned_data.get('password'))
 
@@ -63,10 +76,18 @@ class SignInForm(forms.Form):
                'placeholder': "Enter your password", }))
 
     def clean_password(self):
+        """
+        Validate password input
+        :return: password
+        """
         self.get_user()
         return self.cleaned_data.get('password')
 
     def get_user(self):
+        """
+        Validate user
+        :return: authenticated user
+        """
         username, password = self.cleaned_data.get('username'), self.cleaned_data.get('password')
         user = authenticate(username=username, password=password)
 

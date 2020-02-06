@@ -5,6 +5,10 @@ from . import forms
 
 
 def sign_up(request):
+    """
+    View for sign up page. If user authenticated, then redirect to main page.
+    Validate sign up form and create new user in database.
+    """
     if request.user.is_authenticated:
         return redirect("main_page")
 
@@ -25,6 +29,10 @@ def sign_up(request):
 
 
 def sign_in(request):
+    """
+    View for sign in page. If user authenticated, then redirect to main page.
+    Validate sign in form and login user.
+    """
     if request.user.is_authenticated:
         return redirect("main_page")
 
@@ -46,5 +54,8 @@ def sign_in(request):
 
 
 def logout_view(request):
+    """
+    View for log out. Logout user.
+    """
     logout(request)
     return HttpResponse()

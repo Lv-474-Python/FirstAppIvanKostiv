@@ -18,6 +18,13 @@ class Category(models.Model):
 
     @staticmethod
     def create(name, user, category):
+        """
+        Create new record of category in database
+        :param name: name of category
+        :param user: user of this category
+        :param category: parent category (None, if this is root category)
+        :return: created object Category or None, if object doesn't created
+        """
         category = Category(name=name, user=user, category=category)
         try:
             category.save()
@@ -44,6 +51,13 @@ class Word(models.Model):
 
     @staticmethod
     def create(name, description, category):
+        """
+        Create new record of word in database
+        :param name: name of word
+        :param description: description to this word
+        :param category: category in which the word is located
+        :return: created object Word or None, if object doesn't created
+        """
         word = Word(name=name, description=description, category=category)
 
         try:
@@ -56,6 +70,13 @@ class Word(models.Model):
         return self.name
 
     def update(self, name=None, description=None, category=None):
+        """
+        Update created word object
+        :param name: name of word
+        :param description: description to this word
+        :param category: category in which the word is located
+        :return: updated object Word or None, if object doesn't update
+        """
         if name is not None:
             self.name = name
 
@@ -70,6 +91,16 @@ class Word(models.Model):
             return self
         except IntegrityError:
             return None
+
+    @staticmethod
+    def delete_by_id(word_id):
+        try:
+            word = Word.objects.get(id=word_id)
+        except Word.DoesNotExist:
+            return False
+
+        word.delete()
+        return True
 
 
 class Example(models.Model):
@@ -86,6 +117,12 @@ class Example(models.Model):
 
     @staticmethod
     def create(word, sentence):
+        """
+        Create new record of example in database
+        :param word: word to which the example relates
+        :param sentence: example string
+        :return: created object Example or None, if object doesn't update
+        """
         example = Example(word=word, sentence=sentence)
 
         try:
@@ -96,6 +133,11 @@ class Example(models.Model):
 
     @staticmethod
     def delete_by_id(example_id):
+        """
+        Delete example object by his id in database
+        :param example_id: example id
+        :return: True if example deleted, False if example didn't delete
+        """
         try:
             db_sentence = Example.objects.get(id=example_id)
         except Example.DoesNotExist:
