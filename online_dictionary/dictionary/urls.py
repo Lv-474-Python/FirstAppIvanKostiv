@@ -18,11 +18,11 @@ urlpatterns = [
          views.edit_word,
          name='edit_word'),
 
-    path('category/<int:category_id>/add_word/',
+    path('category/<int:category_id>/word/',
          views.add_new_word,
          name='new_word'),
 
-    path('category/<int:category_id>/add_category/',
+    path('category/<int:category_id>/subcategory/',
          views.add_new_category,
          name='new_category'),
 

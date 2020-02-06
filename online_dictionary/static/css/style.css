@@ -57,6 +57,12 @@ label {
     color: white;
 }
 
+.workspace-button:hover {
+    color: #0F52BA;
+    background-color: white;
+    border-color: #0F52BA;
+}
+
 .small-button {
     font-size: 3vh;
 }
@@ -143,4 +149,8 @@ textarea {
 
 .green-border {
     border-color: green;
+}
+
+.icon {
+    cursor: pointer;
 }

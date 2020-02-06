@@ -53,7 +53,8 @@
                         {# IF ONLY 1 SENTENCE THEN DON'T SHOW DELETE SENTENCE ICON #}
                         {% ifnotequal word.sentences.all|length 1 %}
                             {# DELETE SENTENCE ICON #}
-                            <svg width="24"
+                            <svg class="icon"
+                                 width="24"
                                  height="24"
                                  viewBox="-2 -2 24 24"
                                  fill="none"
@@ -78,7 +79,8 @@
             {# DELETE WORD ICON #}
             <div class="row mt-4">
                 <div class="mx-auto">
-                    <svg width="32"
+                    <svg class="icon"
+                         width="32"
                          height="32"
                          viewBox="0 0 32 32"
                          fill="none"
@@ -95,7 +97,8 @@
             {# EDIT WORD ICON #}
             <div class="row">
                 <div class="mx-auto">
-                    <svg width="28"
+                    <svg class="icon"
+                         width="28"
                          height="28"
                          viewBox="0 0 28 28"
                          fill="none"

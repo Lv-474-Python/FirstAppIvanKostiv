@@ -10,7 +10,7 @@ function saveEditWord(categoryId, wordId) {
     if (validator.isValid) {
         $.ajax({
             type: 'PUT',
-            url: `/main_page/category/${categoryId}/word/${wordId}/edit_word/`,
+            url: `/main_page/category/${categoryId}/word/${wordId}/`,
             data: {
                 word: word.value,
                 description: description.value,
@@ -20,6 +20,7 @@ function saveEditWord(categoryId, wordId) {
                 xhr.setRequestHeader("X-CSRFToken", `${csrf_token}`);
             },
             success: function (response) {
+                console.log(response);
                 let category = response.new_category_id;
                 let word = response.new_word_id;
 

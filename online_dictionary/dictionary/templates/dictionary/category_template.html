@@ -2,7 +2,12 @@
 {% for category in categories %}
     <li class="ml-3 category-item">
         {# SVG FOR MENU COLLAPSE | EXPAND #}
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"
+        <svg class="icon"
+             width="16"
+             height="16"
+             viewBox="0 0 16 16"
+             fill="none"
+             xmlns="http://www.w3.org/2000/svg"
              data-toggle="collapse"
              data-target="#{{ category.id }}"
              aria-expanded="false"
