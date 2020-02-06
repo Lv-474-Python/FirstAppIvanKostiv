@@ -1,15 +1,17 @@
 function deleteSentenceInput(sentence_input) {
+    // if sentence is empty
     if (sentence_input.value === '') {
+        // and this is not last sentence, then delete this input
         if (sentence_input.getAttribute('id') !== 'last_sentence') {
-            // empty not last sentence input
+            // input > div > div > form.delete(div)
             sentence_input.parentNode.parentNode.parentNode.removeChild(sentence_input.parentNode.parentNode);
-            // input > div > form.delete(div)
         }
     }
 }
 
+
 function addNewSentenceInput(sentence_input) {
-    console.log("focus")
+    // if this is last sentence then add new input for new sentence
     if (sentence_input.getAttribute('id') === 'last_sentence') {
         $('#last_sentence')
             .removeAttr('id')
@@ -23,6 +25,7 @@ function addNewSentenceInput(sentence_input) {
 }
 
 function addNewSubcategoryInput(subcategory_input) {
+    // if this is last subcategory then add new input for new subcategory
     if (subcategory_input.getAttribute('id') === 'last_subcategory') {
         $('#last_subcategory')
             .removeAttr('id')
@@ -36,11 +39,12 @@ function addNewSubcategoryInput(subcategory_input) {
 }
 
 function deleteSubcategoryInput(subcategory) {
+    // if input is empty
     if (subcategory.value === '') {
+        // and this is not the last input for subcategory then delete them
         if (subcategory.getAttribute('id') !== 'last_subcategory') {
-            // empty not last sentence input
+             // input > div > form.delete(div)
             subcategory.parentNode.parentNode.removeChild(subcategory.parentNode);
-            // input > div > form.delete(div)
         }
     }
 }

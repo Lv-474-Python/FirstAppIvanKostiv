@@ -1,3 +1,4 @@
+// function to get all not unique element of list
 function getNotUniqueArray(array) {
     let notUnique = [];
     for (let i = 0; i < array.length;) {
@@ -32,6 +33,7 @@ Array.prototype.unique = function () {
     return arr;
 };
 
+// function to get all value of inputs without empty strings
 function clearList(list) {
     let array = [];
     list.forEach((item) => {
@@ -47,6 +49,7 @@ function clearList(list) {
     return array
 }
 
+// function to get list of string in lower case
 function stringsArrayToLowerCase(array) {
     for (let i = 0; i < array.length; ++i) {
         array[i] = array[i].toLowerCase()
@@ -55,6 +58,7 @@ function stringsArrayToLowerCase(array) {
     return array
 }
 
+// function to make toast message with text in param
 function makeToast(message) {
     $.toast({
         heading: "Error!",
@@ -68,6 +72,7 @@ function makeToast(message) {
     });
 }
 
+// function to make tooltip to the element with message
 function makeTooltip(element, message) {
     $(element).tooltipster({
         content: message,

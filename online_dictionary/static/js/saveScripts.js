@@ -1,3 +1,4 @@
+// function to save edited word by categoryId and wordId
 function saveEditWord(categoryId, wordId) {
     let csrf_token = document.getElementsByName("csrfmiddlewaretoken")[0].value;
 
@@ -5,8 +6,10 @@ function saveEditWord(categoryId, wordId) {
     let description = document.getElementsByName('description')[0];
     let sentences = document.getElementsByName('sentences');
 
+    // validate all inputs
     let validator = validateAddNewWord(word, description, sentences);
 
+    // if data valid, then send ajax request to save edited word
     if (validator.isValid) {
         $.ajax({
             type: 'PUT',
