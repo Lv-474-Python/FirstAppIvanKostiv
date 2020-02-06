@@ -31,6 +31,7 @@ function validateAddNewWord(word, description, sentences) {
     validateWord(word, validator);
     validateDescription(description, validator);
     validateUniqueSentences(sentences, validator);
+    validateOneOrMoreSentence(sentences, validator);
 
     for (let i = 0; i < sentences.length - 1; ++i) {
         validateWordAndSentenceSimilar(word, sentences[i], validator);
@@ -130,6 +131,17 @@ function validateDescriptionAndSentenceSimilar(description, sentence, validator)
         $(sentence).addClass("red-border");
 
         addErrorToValidator(validator, "A sentence cannot consist only of a description of the word");
+    }
+}
+
+function validateOneOrMoreSentence(sentences, validator) {
+    let clearSentences = stringsArrayToLowerCase(clearList(sentences));
+
+    if (clearSentences.length < 1) {
+        addErrorToValidator(validator, "At least one example should be added");
+        sentences.forEach((element) => {
+            $(element).addClass('red-border');
+        })
     }
 }
 

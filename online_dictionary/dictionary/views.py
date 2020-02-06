@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.http import QueryDict, HttpResponse, JsonResponse
 from .models import Category, Word, Example
@@ -98,20 +98,16 @@ def add_new_word(request, category_id):
                 if new_example is None:
                     return JsonResponse({
                         'error': f'Example {new_example} is already exist',
-                    },
-                        status=403
-                    )
+                    }, status=403)
 
             return JsonResponse({
                 'new_category_id': str(new_word.category.id),
                 'new_word_id': str(new_word.id)
-            },
-                status=200)
-        else:
-            return JsonResponse({
-                'error': f"Word {request.POST.get('word')} is already exist",
-            },
-                status=403)
+            }, status=200)
+
+        return JsonResponse({
+            'error': f"Word {request.POST.get('word')} is already exist",
+        }, status=403)
 
     context = {
         'categories': Category.objects.filter(
@@ -153,19 +149,15 @@ def add_new_category(request, category_id):
                 if new_subcategory is None:
                     return JsonResponse({
                         'error': f'Subcategory {new_subcategory} is already exist',
-                    },
-                        status=403
-                    )
+                    }, status=403)
+
             return JsonResponse({
                 'new_category_id': str(new_category.id)
-            },
-                status=200)
+            }, status=200)
 
-        else:
-            return JsonResponse({
-                'error': f"Category {request.POST.get('category')} is already exist",
-            },
-                status=403)
+        return JsonResponse({
+            'error': f"Category {request.POST.get('category')} is already exist",
+        }, status=403)
 
     context = {
         'categories': Category.objects.filter(
@@ -203,18 +195,14 @@ def add_new_language(request):
                 if new_subcategory is None:
                     return JsonResponse({
                         'error': f'Subcategory {new_subcategory} is already exist',
-                    },
-                        status=403
-                    )
+                    }, status=403)
 
             return JsonResponse({
-                'new_category_id': str(new_language.id)},
-                status=200)
-        else:
-            return JsonResponse({
-                'error': f"Category {request.POST.get('category')} is already exist",
-            },
-                status=403)
+                'new_category_id': str(new_language.id)}, status=200)
+
+        return JsonResponse({
+            'error': f"Category {request.POST.get('category')} is already exist",
+        }, status=403)
 
     context = {
         'categories': Category.objects.filter(
@@ -263,20 +251,16 @@ def edit_word(request, category_id, word_id):
                 if sentence is None:
                     return JsonResponse({
                         'error': f'Example {example} is already exist',
-                    },
-                        status=403
-                    )
+                    }, status=403)
 
             return JsonResponse({
                 'new_category_id': str(word.category.id),
                 'new_word_id': str(word.id)
-            },
-                status=200)
-        else:
-            return JsonResponse({
-                'error': f"Word {request.POST.get('word')} is already exist",
-            },
-                status=403)
+            }, status=200)
+
+        return JsonResponse({
+            'error': f"Word {request.POST.get('word')} is already exist",
+        }, status=403)
 
     word = get_object_or_404(Word, id=word_id)
 

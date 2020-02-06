@@ -56,7 +56,8 @@
                             <input class="form-control w-100 word-input p-2 sentence_input"
                                    type="text"
                                    placeholder="Enter a sentence with this word..."
-                                   onblur="addNewSentenceInput(this)"
+                                   onfocus="addNewSentenceInput(this)"
+                                   onblur="deleteSentenceInput(this)"
                                    name="sentences"
                                    value="{{ sentence }}">
                         </div>
@@ -69,7 +70,8 @@
                         <input class="form-control w-100 word-input p-2 sentence_input"
                                type="text"
                                placeholder="Enter a sentence with this word..."
-                               onblur="addNewSentenceInput(this)"
+                               onfocus="addNewSentenceInput(this)"
+                               onblur="deleteSentenceInput(this)"
                                id="last_sentence"
                                name="sentences">
                     </div>

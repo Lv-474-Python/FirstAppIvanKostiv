@@ -54,7 +54,8 @@
                     <input class="form-control w-100 word-input p-2 subcategory_input"
                            type="text"
                            placeholder="Enter subcategory..."
-                           onblur="addNewSubcategoryInput(this)"
+                           onfocus="addNewSubcategoryInput(this)"
+                           onblur="deleteSubcategoryInput(this)"
                            id="last_subcategory"
                            name="subcategories"
                            maxlength="50">
