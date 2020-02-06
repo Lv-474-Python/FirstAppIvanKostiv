@@ -1,7 +1,7 @@
 function logout() {
     let csrf_token = document.getElementsByName("csrfmiddlewaretoken")[0].value;
     $.ajax({
-        type: 'GET',
+        type: 'POST',
         url: `/logout/`,
 
         beforeSend: function (xhr) {

@@ -251,16 +251,6 @@ def add_new_language(request):
 
 
 @login_required()
-def delete_example(request):
-    if request.method == "DELETE":
-        body_sentence = QueryDict(request.body)
-        db_sentence = get_object_or_404(Example, id=body_sentence.get('sentence_id'))
-        db_sentence.delete()
-
-    return HttpResponse()
-
-
-@login_required()
 def edit_word(request, category_id, word_id):
     word = get_object_or_404(Word, id=word_id)
 
@@ -278,3 +268,15 @@ def edit_word(request, category_id, word_id):
         'dictionary/edit_word.html',
         context
     )
+
+
+@login_required()
+def delete_example(request):
+    if request.method == "DELETE":
+        body_sentence = QueryDict(request.body)
+        if Example.delete_by_id(body_sentence.get('sentence_id')):
+            return HttpResponse()
+        else:
+            return JsonResponse({
+                'error': f'Error while deleting this sentence',
+            }, status=422)

@@ -94,5 +94,15 @@ class Example(models.Model):
         except IntegrityError:
             return None
 
+    @staticmethod
+    def delete_by_id(example_id):
+        try:
+            db_sentence = Example.objects.get(id=example_id)
+        except Example.DoesNotExist:
+            return False
+
+        db_sentence.delete()
+        return True
+
     def __str__(self):
         return self.sentence

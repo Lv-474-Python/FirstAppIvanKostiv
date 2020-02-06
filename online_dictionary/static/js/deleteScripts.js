@@ -27,8 +27,9 @@ function deleteSentence(sentence_id) {
                             success: function () {
                                 $(`#${sentence_id}`).remove();
                             },
-                            error: function (errors) {
-                                alert("Error:" + errors.responseText)
+                            error: function (error_message) {
+                                let error = JSON.parse(error_message.responseText);
+                                makeToast(error.error);
                             }
                         });
                     }
