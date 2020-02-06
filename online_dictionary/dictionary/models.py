@@ -94,6 +94,11 @@ class Word(models.Model):
 
     @staticmethod
     def delete_by_id(word_id):
+        """
+        Delete word object by his id in database
+        :param word_id: example id
+        :return: True if word deleted, False if example didn't delete
+        """
         try:
             word = Word.objects.get(id=word_id)
         except Word.DoesNotExist:
