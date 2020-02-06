@@ -45,6 +45,7 @@ function validateAddNewWord(word, description, sentences) {
 function validateCategory(category, validator) {
     if (!validateMinLength(category.value, 3)) {
         $(category).addClass("red-border");
+        makeTooltip(category, "Category must contain at least 3 character");
 
         addErrorToValidator(validator, "Category must contain at least 3 character");
     }
@@ -61,6 +62,7 @@ function validateUniqueSubcategory(subcategories, validator) {
         for (let i = 0; i < subcategories.length - 1; ++i) {
             if (notUnique.contains(subcategories[i].value.toLowerCase())) {
                 $(subcategories[i]).addClass('red-border')
+                makeTooltip(subcategories[i], "You can't added similar subcategory");
             }
         }
         addErrorToValidator(validator, "You can't added similar subcategory");
@@ -70,6 +72,7 @@ function validateUniqueSubcategory(subcategories, validator) {
 function validateMinLengthSubcategory(subcategory, validator) {
     if (!validateMinLength(subcategory.value, 3)) {
         $(subcategory).addClass('red-border');
+        makeTooltip(subcategory, "Category must contain at least 3 character");
 
         addErrorToValidator(validator, "Category must contain at least 3 character");
     }
@@ -80,6 +83,9 @@ function validateCategoryAndSubcategorySimilar(category, subcategory, validator)
         $(category).addClass("red-border");
         $(subcategory).addClass("red-border");
 
+        makeTooltip(category, "The title of the main category and the sub-category match");
+        makeTooltip(subcategory, "The title of the main category and the sub-category match");
+
         addErrorToValidator(validator, "The title of the main category and the sub-category match");
     }
 }
@@ -88,6 +94,7 @@ function validateWord(word, validator) {
     if (!validateMinLength(word.value, 3)) {
         $(word).addClass("red-border");
 
+        makeTooltip(word, "Word must contain at least 3 character");
         addErrorToValidator(validator, "Word must contain at least 3 character");
     }
 }
@@ -96,6 +103,7 @@ function validateDescription(description, validator) {
     if (!validateMinLength(description.value, 3)) {
         $(description).addClass("red-border");
 
+        makeTooltip(description, "Description must contain at least 3 character");
         addErrorToValidator(validator, "Description must contain at least 3 character");
     }
 }
@@ -110,6 +118,7 @@ function validateUniqueSentences(sentences, validator) {
         for (let i = 0; i < sentences.length - 1; ++i) {
             if (notUnique.contains(sentences[i].value.toLowerCase())) {
                 $(sentences[i]).addClass('red-border');
+                makeTooltip(sentences[i], "You can't added similar sentences");
             }
         }
         addErrorToValidator(validator, "You can't added similar sentences");
@@ -121,6 +130,8 @@ function validateWordAndSentenceSimilar(word, sentence, validator) {
         $(word).addClass("red-border");
         $(sentence).addClass("red-border");
 
+        makeTooltip(word, "Sentences can not consist only of words entered");
+        makeTooltip(sentence, "Sentences can not consist only of words entered");
         addErrorToValidator(validator, "Sentences can not consist only of words entered");
     }
 }
@@ -129,6 +140,9 @@ function validateDescriptionAndSentenceSimilar(description, sentence, validator)
     if (description.value.toLowerCase() === sentence.value.toLowerCase()) {
         $(description).addClass("red-border");
         $(sentence).addClass("red-border");
+
+        makeTooltip(sentence, "A sentence cannot consist only of a description of the word");
+        makeTooltip(description, "A sentence cannot consist only of a description of the word");
 
         addErrorToValidator(validator, "A sentence cannot consist only of a description of the word");
     }
@@ -141,6 +155,7 @@ function validateOneOrMoreSentence(sentences, validator) {
         addErrorToValidator(validator, "At least one example should be added");
         sentences.forEach((element) => {
             $(element).addClass('red-border');
+            makeTooltip(element, "At least one example should be added");
         })
     }
 }
@@ -148,6 +163,7 @@ function validateOneOrMoreSentence(sentences, validator) {
 function validateMinLengthSentence(sentence, validator) {
     if (!validateMinLength(sentence.value, 3)) {
         $(sentence).addClass('red-border');
+        makeTooltip(sentence, "Sentence must contain at least 3 character");
         addErrorToValidator(validator, "Sentence must contain at least 3 character");
     }
 }

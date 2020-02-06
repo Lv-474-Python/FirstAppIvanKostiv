@@ -67,3 +67,9 @@ function makeToast(message) {
         stack: 3,
     });
 }
+
+function makeTooltip(element, message) {
+    $(element).tooltipster({
+        content: message,
+    })
+}
